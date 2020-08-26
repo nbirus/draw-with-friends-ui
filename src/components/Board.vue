@@ -15,17 +15,16 @@
 
 <script>
 import { onMounted } from 'vue'
-import io from 'socket.io-client'
-
-// create connection
-const socket = io.connect(process.env.VUE_APP_URL)
+import { socket } from '@/composition/Socket'
+import store from '@/store'
 
 export default {
 	name: 'board',
 	setup() {
 		let canvas
 		let ctx
-		let id = getId()
+		let id = store.getters['userid']
+		let username = store.getters['username']
 		let drawing = false
 		let clients = {}
 		let cursors = {}
@@ -63,12 +62,14 @@ export default {
 			// 	top: data.y,
 			// })
 
-			// Is the user drawing?
+			// Draw other user's shape
 			if (data.drawing && clients[data.id]) {
-				// Draw a line on the canvas. clients[data.id] holds
-				// the previous position of this user's mouse pointer
-
-				drawLine(clients[data.id].x, clients[data.id].y, data.x, data.y)
+				drawLine(
+					clients[data.id].x,
+					clients[data.id].y,
+					data.x,
+					data.y
+				)
 			}
 
 			// Saving the current client state
@@ -93,6 +94,7 @@ export default {
 					x: e.offsetX,
 					y: e.offsetY,
 					drawing: drawing,
+					username: username,
 					id: id,
 				})
 				lastEmit = Date.now()
@@ -127,12 +129,6 @@ export default {
 			canvasMouseMove,
 		}
 	},
-}
-
-function getId() {
-	return Math.random()
-		.toString(16)
-		.slice(2)
 }
 </script>
 
