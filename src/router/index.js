@@ -1,15 +1,18 @@
-import { createRouter, createWebHistory } from 'vue-router'
+/* eslint-disable */
+import {
+	createRouter,
+	createWebHistory
+} from 'vue-router'
 
-const routes = [
-	{
+const routes = [{
 		path: '/',
 		name: 'Home',
-		component: () => import(/* webpackChunkName: "home" */ '../views/HomePage.vue'),
+		component: () => import( /* webpackChunkName: "home" */ '../views/HomePage.vue'),
 	},
 	{
 		path: '/play',
 		name: 'Game',
-		component: () => import(/* webpackChunkName: "game" */ '../views/GamePage.vue'),
+		component: () => import( /* webpackChunkName: "game" */ '../views/GamePage.vue'),
 	},
 ]
 
