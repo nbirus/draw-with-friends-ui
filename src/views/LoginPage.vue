@@ -1,7 +1,7 @@
 <template>
 	<div class="page">
 		<div class="page__container">
-			<h1 class="mb-10">Create a username</h1>
+			<h1 class="mb-5">Create a username</h1>
 			<form @submit.prevent="setUser">
 				<div class="input-group">
 					<input
