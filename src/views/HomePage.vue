@@ -1,12 +1,13 @@
 <template>
-	<div class="page home">
+	<div class="page" v-if="socketState.loading">
+		<div class="page__container">
+			<h1>Connecting...</h1>
+		</div>
+	</div>
+	<div class="page home" v-else>
 		<div class="page__header"></div>
 
-		<span v-if="socketState.loading">Connecting...</span>
-
 		<div class="page__body">
-			<hr />
-
 			<div class="players">
 				<h4 class="mb-2">Players Online</h4>
 				<ul class="mb-3">
@@ -16,7 +17,7 @@
 				</ul>
 			</div>
 
-			<hr />
+			<!-- <hr />
 
 			<div class="room-list">
 				<h4 class="mb-2">Room List</h4>
@@ -34,7 +35,7 @@
 					<input class="input mr-3" placeholder="Set roomname" type="text" />
 					<button class="btn btn-primary" type="submit">Host Room</button>
 				</form>
-			</div>
+			</div>-->
 		</div>
 	</div>
 </template>
