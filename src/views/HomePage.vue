@@ -5,20 +5,31 @@
 		</div>
 	</div>
 	<div class="page home" v-else>
-		<div class="page__header"></div>
+		<div class="page__header">
+			<!-- <router-link class="btn btn-outline" to="/login">Change username</router-link> -->
+			<h1 class="mb-10">Join or create a game</h1>
+		</div>
 
 		<div class="page__body">
-			<div class="players">
+			<ul class="room-list">
+				<li class="room-list__item">
+					<lobby-create-card class="room-list__card" />
+				</li>
+				<li class="room-list__item" v-for="(room, i) in $store.getters['game/rooms']" :key="i">
+					<lobby-card class="room-list__card" v-bind="room"></lobby-card>
+				</li>
+			</ul>
+
+			<!-- <div class="players">
 				<h4 class="mb-2">Players Online</h4>
 				<ul class="mb-3">
 					<li v-for="(player, i) in socketState.players" :key="i">
 						<span>{{player}}</span>
 					</li>
 				</ul>
-			</div>
+			</div>-->
 
 			<!-- <hr />
-
 			<div class="room-list">
 				<h4 class="mb-2">Room List</h4>
 				<ul>
@@ -28,7 +39,6 @@
 					</li>
 				</ul>
 			</div>
-
 			<hr />
 			<div class="room-creator">
 				<form @submit.prevent="createRoom">
@@ -41,11 +51,14 @@
 </template>
 
 <script>
+import LobbyCard from '@/components/LobbyCard'
+import LobbyCreateCard from '@/components/LobbyCreateCard'
 import useSocket from '@/composition/Socket'
 import { onMounted, onBeforeUnmount } from 'vue'
 
 export default {
 	name: 'Home',
+	components: { LobbyCard, LobbyCreateCard },
 	setup() {
 		onMounted(() => {
 			useSocket.connect()
@@ -66,6 +79,20 @@ export default {
 
 	&__header {
 		margin-bottom: 3rem;
+
+		a {
+			position: absolute;
+			left: 4.5rem;
+		}
+	}
+}
+.room-list {
+	display: grid;
+	grid-template-columns: 1fr 1fr 1fr;
+	grid-gap: 1rem 2rem;
+
+	&__item {
+		// grid-row: 1;
 	}
 }
 </style>

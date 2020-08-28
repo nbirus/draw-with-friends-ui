@@ -1,4 +1,7 @@
-import { createStore } from 'vuex'
+import {
+	createStore
+} from 'vuex'
+import game from './game'
 
 export default createStore({
 	state() {
@@ -23,18 +26,26 @@ export default createStore({
 		},
 	},
 	actions: {
-		setUsername({ commit }, username) {
+		setUsername({
+			commit
+		}, username) {
 			commit('SET_USERNAME', username)
 		},
-		setUserid({ commit, getters }) {
+		setUserid({
+			commit,
+			getters
+		}) {
 			if (!getters.userid) {
 				commit(
 					'SET_USER_ID',
 					Math.random()
-						.toString(16)
-						.slice(2)
+					.toString(16)
+					.slice(2)
 				)
 			}
 		},
 	},
+	modules: {
+		game
+	}
 })

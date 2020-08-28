@@ -15,14 +15,20 @@ h1 {
 	font-size: 2.5rem;
 }
 
+h5 {
+	font-size: 1.3rem;
+}
+
 // input 
 .input {
 	padding: 0 1rem;
+	margin: 0;
 	font-size: 1rem;
 	height: 45px;
 	border: solid thin $border-color;
 	border-radius: $border-radius;
 	color: $text;
+	background-color: #fff;
 
 	&:focus {
 		outline-color: $primary;
@@ -36,6 +42,7 @@ h1 {
 
 .btn {
 	padding: .5rem 2rem;
+	margin: 0;
 	font-size: 1rem;
 	height: 45px;
 	background-color: #fff;
@@ -48,15 +55,21 @@ h1 {
 		color: white;
 
 		&:hover {
-			background-color: fade-out($primary, .4);
+			background-color: darken($primary, 5) !important;
 		}
 
 		&:active {
-			background-color: $primary;
+			background-color: darken($primary, 10) !important;
+			// transform: translateY(1px);
+			outline: none;
+			box-shadow: 0px 0px 2rem darken($primary, 20) inset;
+
 		}
 
 		&:focus {
 			background-color: $primary;
+			// outline: none;
+			// box-shadow: 0px 0px 0px 2px black;
 		}
 	}
 
@@ -64,6 +77,17 @@ h1 {
 		height: 60px;
 		font-size: 1.3rem;
 	}
+
+	&-block {
+		width: 100%;
+	}
+}
+
+.card {
+	border-radius: $border-radius;
+	border: solid thin $border-color-light;
+	box-shadow: $box-shadow;
+	background-color: #fff;
 }
 
 // margin
@@ -85,6 +109,10 @@ h1 {
 
 .mb-5 {
 	margin-bottom: 2rem;
+}
+
+.mb-6 {
+	margin-bottom: 2.5rem;
 }
 
 .mb-10 {

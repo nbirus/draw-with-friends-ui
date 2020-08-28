@@ -1,7 +1,7 @@
 <template>
 	<div class="page">
 		<div class="page__container">
-			<h1 class="mb-5">Create a username</h1>
+			<h1 class="mb-6">Choose a username</h1>
 			<form @submit.prevent="setUser">
 				<div class="input-group">
 					<input
@@ -11,7 +11,7 @@
 						:value="$store.getters['username']"
 					/>
 				</div>
-				<button class="btn btn-primary btn-large" type="submit">Start</button>
+				<button class="btn btn-primary btn-large" type="submit">Next</button>
 			</form>
 		</div>
 	</div>
@@ -39,11 +39,15 @@ export default {
 <style lang="scss" scoped>
 .page {
 	display: flex;
-	align-items: center;
+	// align-items: center;
 	justify-content: center;
+	padding-top: 20vh;
 
 	.input {
 		width: 350px;
+	}
+	.btn {
+		width: auto;
 	}
 }
 </style>

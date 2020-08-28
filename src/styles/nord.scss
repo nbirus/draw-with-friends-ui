@@ -856,11 +856,13 @@ legend {
 }
 
 label {
-  padding: calc(var(--universal-padding) / 2) var(--universal-padding);
+  display: block;
+  margin-bottom: .5rem;
+  // padding: calc(var(--universal-padding) / 2) var(--universal-padding);
 }
 
 .input-group {
-  display: inline-block;
+  display: block;
 }
 
 .input-group.fluid {
