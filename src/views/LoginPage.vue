@@ -49,5 +49,9 @@ export default {
 	.btn {
 		width: auto;
 	}
+
+	form {
+		display: flex;
+	}
 }
 </style>
