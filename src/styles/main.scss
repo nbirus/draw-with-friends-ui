@@ -19,6 +19,10 @@ h5 {
 	font-size: 1.3rem;
 }
 
+.text-light {
+	color: $text-light;
+}
+
 // input 
 .input {
 	padding: 0 1rem;
@@ -80,6 +84,15 @@ h5 {
 
 	&-block {
 		width: 100%;
+	}
+
+	&-text {
+		border: none;
+		color: $text-light;
+
+		&:hover {
+			color: $text;
+		}
 	}
 }
 

@@ -27,8 +27,17 @@ export default {
 		</div>
 		<ul class="lobby-card__players">
 			<li class="lobby-card__player" v-for="(player, i) in playersList" :key="i">
-				<div v-if="player.id !== 'empty'">{{player.username}}</div>
-				<div v-else>Waiting for player...</div>
+				<div v-if="player.id !== 'empty'">
+					<span>{{player.username}}</span>
+					<i class="icon circle"></i>
+				</div>
+				<div class="empty" v-else>
+					<span class="text">Waiting for player...</span>
+					<button class="btn btn-text btn-lobby">
+						<i class="icon">+</i>
+						Join room
+					</button>
+				</div>
 			</li>
 		</ul>
 	</div>
@@ -39,7 +48,7 @@ export default {
 
 .lobby-card {
 	&__header {
-		border-bottom: solid thin $border-color;
+		border-bottom: solid thin $border-color-light;
 		padding: 1rem 0;
 	}
 	&__players {
@@ -47,10 +56,66 @@ export default {
 		margin: 0;
 	}
 	&__player {
-		padding: 1.5rem;
+		height: 64px;
+		padding: 0 1rem;
+		position: relative;
+
+		display: flex;
+		align-items: center;
+		justify-content: center;
 
 		&:not(:last-child) {
-			border-bottom: solid thin $border-color;
+			border-bottom: solid thin $border-color-light;
+		}
+
+		.icon {
+			position: absolute;
+			right: 1rem;
+			background-color: fade-out(black, 0.9);
+			width: 1rem;
+			height: 1rem;
+			border-radius: 50%;
+		}
+	}
+}
+.empty {
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background-color: fade-out(black, 0.99);
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+	.text {
+		font-size: 0.9rem;
+		color: $text-light;
+	}
+
+	.btn {
+		opacity: 0;
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		width: 100%;
+		height: unset;
+		border-radius: 0;
+		// background-color: $primary;
+		transition: opacity 0.05s ease;
+
+		.icon {
+			position: absolute;
+			left: 1.5rem;
+		}
+	}
+	&:hover {
+		.btn {
+			opacity: 1;
 		}
 	}
 }

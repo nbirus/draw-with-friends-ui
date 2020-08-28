@@ -85,6 +85,10 @@ export default {
 			left: 4.5rem;
 		}
 	}
+	&__body {
+		margin: 0 auto;
+		max-width: 900px;
+	}
 }
 .room-list {
 	display: grid;
