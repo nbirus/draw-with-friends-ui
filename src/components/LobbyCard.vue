@@ -4,12 +4,16 @@ export default {
 	props: {
 		name: String,
 		players: Object,
+		colors: Array,
 	},
 	computed: {
+		playersLength() {
+			let players = Object.values(this.players)
+			return players.length
+		},
 		playersList() {
 			let players = Object.values(this.players)
-			let playersLength = players.length
-			for (var i = 0; i < 4 - playersLength; i++) {
+			for (var i = 0; i < 4 - this.playersLength; i++) {
 				players.push({
 					id: 'empty',
 				})
@@ -21,22 +25,23 @@ export default {
 </script>
 
 <template>
-	<div class="lobby-card card">
+	<div ref="card" class="lobby-card card" :class="colors" tabindex="0">
+		<div class="lobby-card-popup">
+			<span>Join {{name}}</span>
+			<span class="player-count">({{playersLength}}/4)</span>
+		</div>
+
 		<div class="lobby-card__header">
 			<h5>{{name}}</h5>
 		</div>
 		<ul class="lobby-card__players">
 			<li class="lobby-card__player" v-for="(player, i) in playersList" :key="i">
-				<div v-if="player.id !== 'empty'">
+				<div v-if="player.id === 'empty'" class="empty">
+					<span class="text">Waiting for player...</span>
+				</div>
+				<div v-else>
 					<span>{{player.username}}</span>
 					<i class="icon circle"></i>
-				</div>
-				<div class="empty" v-else>
-					<span class="text">Waiting for player...</span>
-					<button class="btn btn-text btn-lobby">
-						<i class="icon">+</i>
-						Join room
-					</button>
 				</div>
 			</li>
 		</ul>
@@ -46,10 +51,71 @@ export default {
 <style lang="scss" scoped>
 @import '@/styles/variables.scss';
 
+.lobby-card-popup {
+	position: absolute;
+	border-radius: $border-radius;
+	width: 100%;
+	height: 40px;
+	top: -3rem;
+	color: white;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	animation: popup 0.2s ease;
+	opacity: 0;
+	transform: translateY(1rem);
+	overflow: hidden;
+	transition: all 0.2s ease;
+	background-color: fade-out(black, 0.25);
+	font-size: 0.9rem;
+
+	span {
+		position: absolute;
+	}
+	.player-count {
+		right: 1rem;
+		font-size: 0.8rem;
+		color: fade-out(white, 0.25);
+	}
+}
+
 .lobby-card {
+	transition: all 0.2s ease;
+	overflow: visible;
+
+	&:hover {
+		cursor: pointer;
+		transform: scale(1.05);
+		box-shadow: $box-shadow-large;
+
+		.lobby-card-popup {
+			opacity: 1;
+			transform: translateY(0rem);
+		}
+	}
+	&:active {
+		transform: scale(1.025);
+		box-shadow: $box-shadow;
+	}
+	&:focus {
+		outline: none;
+
+		&:after {
+			content: '';
+			position: absolute;
+			top: -3px;
+			right: -3px;
+			left: -3px;
+			bottom: -3px;
+			border: solid 3px fade-out($primary, 0.5);
+			border-radius: $border-radius;
+		}
+	}
+
 	&__header {
 		border-bottom: solid thin $border-color-light;
 		padding: 1rem 0;
+		text-align: center;
 	}
 	&__players {
 		padding: 0;
@@ -93,30 +159,6 @@ export default {
 	.text {
 		font-size: 0.9rem;
 		color: $text-light;
-	}
-
-	.btn {
-		opacity: 0;
-		position: absolute;
-		top: 0;
-		left: 0;
-		right: 0;
-		bottom: 0;
-		width: 100%;
-		height: unset;
-		border-radius: 0;
-		// background-color: $primary;
-		transition: opacity 0.05s ease;
-
-		.icon {
-			position: absolute;
-			left: 1.5rem;
-		}
-	}
-	&:hover {
-		.btn {
-			opacity: 1;
-		}
 	}
 }
 </style>

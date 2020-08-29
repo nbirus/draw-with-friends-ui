@@ -1,26 +1,42 @@
 <template>
-	<div id="app">
-		<router-view />
+	<div class="draw" id="app">
+		<!-- page -->
+		<transition name="page" mode="out-in">
+			<div class="draw__content" :key="$route.name">
+				<router-view />
+			</div>
+		</transition>
+
+		<!-- toolbar -->
+		<toolbar class="draw__toolbar" />
+
+		<!-- dialogs -->
 	</div>
 </template>
 
 <script>
+import Toolbar from '@/views/Toolbar'
 export default {
 	name: 'app',
+	components: {
+		Toolbar,
+	},
 }
 </script>
 
 <style lang="scss">
-#app {
-	font-family: Avenir, Helvetica, Arial, sans-serif;
-	-webkit-font-smoothing: antialiased;
-	-moz-osx-font-smoothing: grayscale;
-	text-align: center;
-	color: #2c3e50;
-}
-.username-dialog {
-	position: fixed;
-	width: 100%;
-	height: 100%;
+.draw {
+	&__content {
+		z-index: 1;
+		padding-bottom: 50px;
+	}
+	&__toolbar {
+		position: fixed;
+		bottom: 0;
+		left: 0;
+		right: 0;
+		height: 50px;
+		z-index: 3;
+	}
 }
 </style>

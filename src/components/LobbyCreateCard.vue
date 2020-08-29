@@ -28,8 +28,9 @@ export default {
 	height: 340px;
 
 	&__header {
-		border-bottom: solid thin $border-color;
+		border-bottom: solid thin $border-color-light;
 		padding: 1rem 0;
+		text-align: center;
 	}
 	&__body {
 		flex: 0 1 100%;

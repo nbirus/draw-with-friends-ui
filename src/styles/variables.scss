@@ -1,8 +1,29 @@
+$navy: #001f3f;
+$blue: #0074D9;
+$aqua: #7FDBFF;
+$teal: #39CCCC;
+$olive: #3D9970;
+$green: #2ECC40;
+$lime: #01FF70;
+$yellow: #FFDC00;
+$orange: #FF851B;
+$red: #FF4136;
+$maroon: #85144b;
+$fuchsia: #F012BE;
+$purple: #B10DC9;
+$black: #111111;
+$grey: #AAAAAA;
+$silver: #DDDDDD;
+
+
+
 $border-color: fade-out(black, .75);
 $border-color-light: fade-out(black, .9);
 $border-radius: .5rem;
-$primary: #0074FF;
-$text: black;
+$primary: $blue;
+$text: $black;
 $text-light: lighten(black, 60);
 $box-shadow: 0 4px 6px -1px rgba(0, 0, 0, .1),
 0 2px 4px -1px rgba(0, 0, 0, .06);
+$box-shadow-large: 0 5px 25px -5px rgba(0, 0, 0, .2),
+0 -5px 10px -5px rgba(0, 0, 0, .06);

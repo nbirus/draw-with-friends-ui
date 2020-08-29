@@ -1,24 +1,23 @@
 <template>
-	<div class="page" v-if="socketState.loading">
-		<div class="page__container">
-			<h1>Connecting...</h1>
-		</div>
-	</div>
-	<div class="page home" v-else>
+	<div class="page home">
 		<div class="page__header">
-			<!-- <router-link class="btn btn-outline" to="/login">Change username</router-link> -->
 			<h1 class="mb-10">Join or create a game</h1>
 		</div>
 
 		<div class="page__body">
-			<ul class="room-list">
-				<li class="room-list__item">
+			<transition-group name="list" tag="ul" mode="out-in" class="room-list" appear>
+				<li class="room-list__item" key="create">
 					<lobby-create-card class="room-list__card" />
 				</li>
-				<li class="room-list__item" v-for="(room, i) in $store.getters['game/rooms']" :key="i">
+				<li
+					class="room-list__item"
+					v-for="(room, key, i) in $store.getters['game/rooms']"
+					:key="i"
+					:class="`delay-${i}`"
+				>
 					<lobby-card class="room-list__card" v-bind="room"></lobby-card>
 				</li>
-			</ul>
+			</transition-group>
 
 			<!-- <div class="players">
 				<h4 class="mb-2">Players Online</h4>
@@ -76,9 +75,11 @@ export default {
 <style lang="scss" scoped>
 .page {
 	padding: 3rem;
+	opacity: 1;
 
 	&__header {
 		margin-bottom: 3rem;
+		text-align: center;
 
 		a {
 			position: absolute;
@@ -93,10 +94,6 @@ export default {
 .room-list {
 	display: grid;
 	grid-template-columns: 1fr 1fr 1fr;
-	grid-gap: 1rem 2rem;
-
-	&__item {
-		// grid-row: 1;
-	}
+	grid-gap: 2rem;
 }
 </style>
