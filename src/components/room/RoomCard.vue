@@ -1,7 +1,10 @@
 <script>
 import { ref } from 'vue'
+import RoomUsers from '@/components/room/RoomUsers'
+
 export default {
 	name: 'room-card',
+	components: { RoomUsers },
 	props: {
 		name: String,
 		roomid: String,
@@ -38,17 +41,7 @@ export default {
 			<h5>{{name}}</h5>
 		</div>
 
-		<ul class="room-card__users">
-			<li class="room-card__user" v-for="(user, i) in usersList" :key="i">
-				<div v-if="user.userid === 'empty'" class="empty">
-					<span class="text">Waiting for user...</span>
-				</div>
-				<div v-else>
-					<span>{{user.username}}</span>
-					<i class="icon circle"></i>
-				</div>
-			</li>
-		</ul>
+		<room-users class="room-card__users" :users="users"></room-users>
 	</router-link>
 </template>
 

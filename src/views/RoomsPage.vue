@@ -57,5 +57,9 @@ export default {
 	display: grid;
 	grid-template-columns: 1fr 1fr 1fr;
 	grid-gap: 2rem;
+
+	&__item {
+		min-width: 250px;
+	}
 }
 </style>

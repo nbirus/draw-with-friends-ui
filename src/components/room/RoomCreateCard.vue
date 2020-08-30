@@ -34,6 +34,7 @@ export default {
 					id="room-name"
 					class="input mr-3"
 					placeholder="Room name"
+					autocomplete="off"
 					type="text"
 				/>
 			</div>

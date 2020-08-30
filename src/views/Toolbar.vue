@@ -32,14 +32,13 @@
 		</div>
 
 		<transition name="chat" mode="out-in">
-			<div class="toolbar__chat card scroller" ref="messageEl" id="messageEl" v-if="messagesOpen">
-				<ul class="toolbar__chat-list">
-					<li class="toolbar__chat-list-item" v-for="(message, i) in messages" :key="i">
-						<div class="username" v-text="message.username"></div>
-						<div class="message" v-text="message.message"></div>
-					</li>
-				</ul>
-			</div>
+			<chat
+				class="toolbar__chat card chat"
+				v-if="messagesOpen"
+				:messages="messages"
+				ref="messageEl"
+				id="messageEl"
+			/>
 		</transition>
 	</div>
 </template>
@@ -51,8 +50,11 @@ import {
 	globalMessage,
 } from '@/services/SocketService'
 import { ref, watch } from 'vue'
+import Chat from '@/components/Chat'
+
 export default {
 	name: 'toolbar',
+	components: { Chat },
 	setup() {
 		const usersOpen = ref(false)
 		const messagesOpen = ref(false)
@@ -63,10 +65,6 @@ export default {
 			globalMessage(message.value)
 			message.value = ''
 		}
-
-		watch([messages, messagesOpen], () => {
-			gotoBottom(messageEl.value)
-		})
 
 		document.addEventListener('click', function(e) {
 			var level = 0
@@ -100,12 +98,6 @@ export default {
 			sendGlobalMessage,
 		}
 	},
-}
-
-function gotoBottom(element) {
-	if (element) {
-		element.scrollTop = element.scrollHeight - element.clientHeight
-	}
 }
 </script>
 

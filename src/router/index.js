@@ -18,15 +18,15 @@ const routes = [{
 		component: () => import( /* webpackChunkName: "username" */ '../views/UsernamePage.vue'),
 	},
 	{
-		path: '/:id/room',
+		path: '/:id',
 		name: 'room',
 		component: () => import( /* webpackChunkName: "room" */ '../views/RoomPage.vue'),
 	},
-	{
-		path: '/:id',
-		name: 'game',
-		component: () => import( /* webpackChunkName: "game" */ '../views/GamePage.vue'),
-	},
+	// {
+	// 	path: '/:id',
+	// 	name: 'game',
+	// 	component: () => import( /* webpackChunkName: "game" */ '../views/GamePage.vue'),
+	// },
 ]
 
 const router = createRouter({
