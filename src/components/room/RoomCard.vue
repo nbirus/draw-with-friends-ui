@@ -1,57 +1,61 @@
 <script>
+import { ref } from 'vue'
 export default {
-	name: 'lobby-card',
+	name: 'room-card',
 	props: {
 		name: String,
-		players: Object,
+		roomid: String,
+		userid: String,
+		users: Object,
 		colors: Array,
 	},
-	computed: {
-		playersLength() {
-			let players = Object.values(this.players)
-			return players.length
-		},
-		playersList() {
-			let players = Object.values(this.players)
-			for (var i = 0; i < 4 - this.playersLength; i++) {
-				players.push({
-					id: 'empty',
-				})
-			}
-			return players
-		},
+	setup(props) {
+		const usersList = ref(Object.values(props.users))
+		const usersLength = Object.values(props.users).length
+
+		for (var i = 0; i < 4 - usersLength; i++) {
+			usersList.value.push({
+				userid: 'empty',
+			})
+		}
+
+		return {
+			usersList,
+			usersLength,
+		}
 	},
 }
 </script>
 
 <template>
-	<div ref="card" class="lobby-card card" :class="colors" tabindex="0">
-		<div class="lobby-card-popup">
+	<router-link :to="`/${roomid}`" ref="card" class="room-card card" :class="colors" tabindex="0">
+		<div class="room-card-popup">
 			<span>Join {{name}}</span>
-			<span class="player-count">({{playersLength}}/4)</span>
+			<span class="user-count">({{usersLength}}/4)</span>
 		</div>
 
-		<div class="lobby-card__header">
+		<div class="room-card__header">
 			<h5>{{name}}</h5>
 		</div>
-		<ul class="lobby-card__players">
-			<li class="lobby-card__player" v-for="(player, i) in playersList" :key="i">
-				<div v-if="player.id === 'empty'" class="empty">
-					<span class="text">Waiting for player...</span>
+
+		<ul class="room-card__users">
+			<li class="room-card__user" v-for="(user, i) in usersList" :key="i">
+				<div v-if="user.userid === 'empty'" class="empty">
+					<span class="text">Waiting for user...</span>
 				</div>
 				<div v-else>
-					<span>{{player.username}}</span>
+					<span>{{user.username}}</span>
 					<i class="icon circle"></i>
 				</div>
 			</li>
 		</ul>
-	</div>
+	</router-link>
 </template>
 
 <style lang="scss" scoped>
 @import '@/styles/variables.scss';
 
-.lobby-card-popup {
+.room-card-popup {
 	position: absolute;
 	border-radius: $border-radius;
 	width: 100%;
@@ -72,23 +76,25 @@ export default {
 	span {
 		position: absolute;
 	}
-	.player-count {
+	.user-count {
 		right: 1rem;
 		font-size: 0.8rem;
 		color: fade-out(white, 0.25);
 	}
 }
 
-.lobby-card {
+.room-card {
 	transition: all 0.2s ease;
 	overflow: visible;
+	color: $text;
+	text-decoration: unset;
 
 	&:hover {
 		cursor: pointer;
 		transform: scale(1.05);
 		box-shadow: $box-shadow-large;
 
-		.lobby-card-popup {
+		.room-card-popup {
 			opacity: 1;
 			transform: translateY(0rem);
 		}
@@ -117,11 +123,11 @@ export default {
 		padding: 1rem 0;
 		text-align: center;
 	}
-	&__players {
+	&__users {
 		padding: 0;
 		margin: 0;
 	}
-	&__player {
+	&__user {
 		height: 64px;
 		padding: 0 1rem;
 		position: relative;

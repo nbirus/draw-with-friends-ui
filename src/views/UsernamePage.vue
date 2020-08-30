@@ -8,7 +8,7 @@
 						class="input input-large mr-3"
 						placeholder="Username"
 						type="text"
-						:value="$store.getters['username']"
+						:value="userState.username"
 					/>
 				</div>
 				<button class="btn btn-primary btn-large" type="submit">Next</button>
@@ -18,20 +18,16 @@
 </template>
 
 <script>
-import { ref } from 'vue'
-import store from '@/store'
+import { setUsername, userState } from '@/services/SocketService'
 import router from '@/router'
-
 export default {
 	name: 'login',
 	setup() {
 		function setUser(e) {
-			store.dispatch('setUserid')
-			store.dispatch('setUsername', e.target[0].value)
+			setUsername(e.target[0].value)
 			router.push('/')
 		}
-
-		return { setUser }
+		return { setUser, userState }
 	},
 }
 </script>
@@ -39,9 +35,14 @@ export default {
 <style lang="scss" scoped>
 .page {
 	display: flex;
-	// align-items: center;
 	justify-content: center;
-	padding-top: 20vh;
+
+	&__container {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		margin-top: 30vh;
+	}
 
 	.input {
 		width: 350px;

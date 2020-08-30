@@ -8,8 +8,7 @@
 			id="canvas"
 			height="500"
 			width="700"
-			>Your browser needs to support canvas for this to work!</canvas
-		>
+		>Your browser needs to support canvas for this to work!</canvas>
 	</div>
 </template>
 
@@ -134,8 +133,8 @@ export default {
 
 <style scoped>
 .board {
-	width: 100%;
-	height: 100%;
+	width: auto;
+	height: auto;
 }
 #canvas {
 	height: 500px;

@@ -2,12 +2,15 @@ import {
 	createStore
 } from 'vuex'
 import game from './game'
+import Socket from '@/composition/Socket'
 
 export default createStore({
 	state() {
 		return {
 			// default id to session
-			userid: sessionStorage.getItem('userid'),
+			userid: sessionStorage.getItem('userid') || Math.random()
+				.toString(16)
+				.slice(2),
 			username: sessionStorage.getItem('username'),
 		}
 	},
@@ -30,19 +33,10 @@ export default createStore({
 			commit
 		}, username) {
 			commit('SET_USERNAME', username)
+			Socket.setPlayerUsername(username)
 		},
-		setUserid({
-			commit,
-			getters
-		}) {
-			if (!getters.userid) {
-				commit(
-					'SET_USER_ID',
-					Math.random()
-					.toString(16)
-					.slice(2)
-				)
-			}
+		connect() {
+			Socket.connect()
 		},
 	},
 	modules: {

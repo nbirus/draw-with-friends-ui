@@ -3,21 +3,28 @@ import {
 	createRouter,
 	createWebHistory
 } from 'vue-router'
-import store from '@/store'
+import {
+	userState
+} from '@/services/SocketService'
 
 const routes = [{
 		path: '/',
-		name: 'Home',
-		component: () => import( /* webpackChunkName: "home" */ '../views/HomePage.vue'),
+		name: 'rooms',
+		component: () => import( /* webpackChunkName: "rooms" */ '../views/RoomsPage.vue'),
 	},
 	{
-		path: '/login',
-		name: 'Login',
-		component: () => import( /* webpackChunkName: "login" */ '../views/LoginPage.vue'),
+		path: '/username',
+		name: 'username',
+		component: () => import( /* webpackChunkName: "username" */ '../views/UsernamePage.vue'),
 	},
 	{
-		path: '/play',
-		name: 'Game',
+		path: '/:id/room',
+		name: 'room',
+		component: () => import( /* webpackChunkName: "room" */ '../views/RoomPage.vue'),
+	},
+	{
+		path: '/:id',
+		name: 'game',
 		component: () => import( /* webpackChunkName: "game" */ '../views/GamePage.vue'),
 	},
 ]
@@ -28,12 +35,17 @@ const router = createRouter({
 
 })
 
-router.beforeEach((to, from, next) => {
+let prevRoute = ''
 
-	if (to.name === 'Login') {
+router.beforeEach((to, from, next) => {
+	if (to.name === 'username') {
 		next()
-	} else if (!store.getters['username']) {
-		next('/login')
+	} else if (!userState.username) {
+		prevRoute = to.fullPath
+		next('/username')
+	} else if (prevRoute) {
+		next(prevRoute)
+		prevRoute = ''
 	} else {
 		next()
 	}

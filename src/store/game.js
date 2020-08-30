@@ -4,93 +4,8 @@ export default {
 	namespaced: true,
 	state() {
 		return {
-			rooms: {
-				'test-1': {
-					name: 'lobby 1',
-					id: 'lobby-1',
-					colors: ['blue', 'orange'],
-					players: {
-						'user1': {
-							id: 'user1',
-							username: 'username'
-						},
-						'user2': {
-							id: 'user2',
-							username: 'username 2'
-						},
-					}
-				},
-				'test-2': {
-					name: 'lobby 1',
-					id: 'lobby-1',
-					colors: ['red', 'purple'],
-					players: {
-						'user1': {
-							id: 'user1',
-							username: 'username'
-						},
-						'user2': {
-							id: 'user2',
-							username: 'username 2'
-						},
-					}
-				},
-				'test-3': {
-					name: 'lobby 1',
-					id: 'lobby-1',
-					colors: ['green', 'yellow'],
-					players: {
-						'user1': {
-							id: 'user1',
-							username: 'username'
-						},
-						'user2': {
-							id: 'user2',
-							username: 'username 2'
-						},
-					}
-				},
-				'test-4': {
-					name: 'lobby 1',
-					id: 'lobby-1',
-					colors: ['blue', 'yellow'],
-
-					players: {
-						'user1': {
-							id: 'user1',
-							username: 'username'
-						},
-						'user2': {
-							id: 'user2',
-							username: 'username 2'
-						},
-					}
-				},
-				'test-5': {
-					name: 'lobby 1',
-					id: 'lobby-1',
-					colors: ['blue', 'yellow'],
-
-					players: {
-						'user1': {
-							id: 'user1',
-							username: 'username'
-						},
-						'user2': {
-							id: 'user2',
-							username: 'username 2'
-						},
-					}
-				},
-			},
-			players: {
-				'id': {
-					username: 'test'
-				},
-				'id2': {
-					username: 'test 2'
-				},
-			},
+			rooms: {},
+			players: {},
 			colors: colors,
 		}
 	},
@@ -104,12 +19,52 @@ export default {
 		SET_ROOMS(state, rooms) {
 			state.rooms = rooms
 		},
+		ADD_ROOM(state, {
+			id,
+			name
+		}) {
+			state.rooms[id] = {
+				name,
+				id,
+				colors: ['blue', 'orange'],
+				players: {
+					'user1': {
+						id: 'user1',
+						username: 'username'
+					}
+				}
+			}
+		},
+		SET_PLAYERS(state, players) {
+			state.players = players
+		},
+		ADD_PLAYER(state, player) {
+			state.players[player.userid] = player
+		}
 	},
 	actions: {
+
+		addPlayeR({
+			commit
+		}, player) {
+			commit('ADD_PLAYER', player)
+		},
+
+		createRoom({
+			commit
+		}, payload) {
+			commit('ADD_ROOM', payload)
+		},
+
 		setRooms({
 			commit
 		}, rooms) {
 			commit('SET_ROOMS', rooms)
+		},
+		setPlayers({
+			commit
+		}, players) {
+			commit('SET_PLAYERS', players)
 		},
 	},
 }

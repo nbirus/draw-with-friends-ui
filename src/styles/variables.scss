@@ -17,9 +17,10 @@ $silver: #DDDDDD;
 
 
 
-$border-color: fade-out(black, .75);
+$border-color: fade-out(black, .8);
 $border-color-light: fade-out(black, .9);
 $border-radius: .5rem;
+$border-radius-large: 1rem;
 $primary: $blue;
 $text: $black;
 $text-light: lighten(black, 60);

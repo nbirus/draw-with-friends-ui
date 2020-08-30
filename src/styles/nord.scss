@@ -751,12 +751,6 @@ a:focus {
   overflow: hidden;
 }
 
-@media screen and (min-width: 320px) {
-  .card {
-    max-width: 320px;
-  }
-}
-
 .card>.section {
   background: var(--card-back-color);
   color: var(--card-fore-color);
@@ -948,8 +942,8 @@ textarea:invalid,
 textarea:focus:invalid,
 select:invalid,
 select:focus:invalid {
-  border-color: var(--input-invalid-color);
-  box-shadow: none;
+  // border-color: var(--input-invalid-color);
+  // box-shadow: none;
 }
 
 input:not([type="button"]):not([type="submit"]):not([type="reset"])[readonly],

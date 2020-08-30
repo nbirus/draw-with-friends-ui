@@ -25,10 +25,10 @@ let socketState = reactive({
 socket.on('connect', () => {
 	socketState.loading = false
 	socketState.connected = socket.connected
-	console.log('You have connected to the server');
+	console.log('Connected');
 
 	// actions
-	createPlayer()
+	setPlayer()
 	getPlayers()
 	getRooms()
 })
@@ -41,7 +41,7 @@ socket.on('disconnect', () => {
 	console.log('You have disconnected to the server');
 })
 socket.on('players', players => {
-	socketState.players = players
+	store.dispatch('game/setPlayers', players)
 })
 socket.on('rooms', rooms => {
 	socketState.rooms = rooms
@@ -62,10 +62,17 @@ function disconnect() {
 }
 
 // player methods
-function createPlayer() {
-	socket.emit('createPlayer', {
-		id: store.getters['userid'],
+function setPlayer() {
+	socket.emit('setPlayer', {
+		userid: store.getters['userid'],
 		username: store.getters['username'],
+	})
+}
+
+function setPlayerUsername(username) {
+	socket.emit('setPlayer', {
+		username,
+		userid: store.getters['userid'],
 	})
 }
 
@@ -101,6 +108,7 @@ export default {
 	socketState,
 	connect,
 	disconnect,
+	setPlayerUsername,
 	createRoom,
 	joinRoom,
 }
