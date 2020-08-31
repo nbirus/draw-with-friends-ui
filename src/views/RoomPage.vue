@@ -47,16 +47,16 @@
 </template>
 
 <script>
-import Chat from '@/components/Chat'
+import Chat from '@/components/utils/Chat'
 import RoomUsers from '@/components/room/RoomUsers'
 import {
 	joinRoom,
 	leaveRoom,
-	roomState,
 	roomMessage,
 	setReady,
-} from '@/services/SocketService'
-import { onMounted, onUnmounted, ref, watch } from 'vue'
+	roomState,
+} from '@/composition/Room'
+import { onMounted, onUnmounted, ref } from 'vue'
 import router from '@/router'
 
 export default {

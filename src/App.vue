@@ -35,7 +35,7 @@ import {
 	connect,
 	disconnect,
 	socketState,
-} from '@/services/SocketService'
+} from '@/composition/Global'
 import router from '@/router'
 
 export default {

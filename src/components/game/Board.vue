@@ -14,20 +14,17 @@
 
 <script>
 import { onMounted } from 'vue'
-import {
-	socket,
-	userState,
-	roomState,
-} from '@/services/SocketService'
-import store from '@/store'
+import socket from '@/services/SocketService'
+import { userState } from '@/composition/User'
+import { roomState } from '@/composition/Room'
 
 export default {
 	name: 'board',
 	setup() {
 		let canvas
 		let ctx
-		let id = store.getters['userid']
-		let username = store.getters['username']
+		let id = ''
+		let username = ''
 		let drawing = false
 		let clients = {}
 		let cursors = {}

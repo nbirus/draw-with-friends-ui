@@ -18,7 +18,7 @@
 </template>
 
 <script>
-import { setUsername, userState } from '@/services/SocketService'
+import { setUsername, userState } from '@/composition/User'
 import router from '@/router'
 export default {
 	name: 'login',

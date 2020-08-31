@@ -1,38 +1,41 @@
 /* eslint-disable */
-import {
-	createRouter,
-	createWebHistory
-} from 'vue-router'
-import {
-	userState
-} from '@/services/SocketService'
+import { createRouter, createWebHistory } from 'vue-router'
+import { userState } from '@/composition/User'
 
-const routes = [{
+const routes = [
+	{
 		path: '/',
 		name: 'rooms',
-		component: () => import( /* webpackChunkName: "rooms" */ '../views/RoomsPage.vue'),
+		component: () =>
+			import(
+				/* webpackChunkName: "rooms" */ '../views/RoomsPage.vue'
+			),
 	},
 	{
 		path: '/username',
 		name: 'username',
-		component: () => import( /* webpackChunkName: "username" */ '../views/UsernamePage.vue'),
+		component: () =>
+			import(
+				/* webpackChunkName: "username" */ '../views/UsernamePage.vue'
+			),
 	},
 	{
 		path: '/:id',
 		name: 'room',
-		component: () => import( /* webpackChunkName: "room" */ '../views/RoomPage.vue'),
+		component: () =>
+			import(/* webpackChunkName: "room" */ '../views/RoomPage.vue'),
 	},
 	{
 		path: '/:id/game',
 		name: 'game',
-		component: () => import( /* webpackChunkName: "game" */ '../views/GamePage.vue'),
+		component: () =>
+			import(/* webpackChunkName: "game" */ '../views/GamePage.vue'),
 	},
 ]
 
 const router = createRouter({
 	history: createWebHistory(process.env.BASE_URL),
 	routes,
-
 })
 
 let prevRoute = ''

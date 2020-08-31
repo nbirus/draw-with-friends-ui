@@ -20,8 +20,7 @@
 <script>
 import RoomCard from '@/components/room/RoomCard'
 import RoomCreateCard from '@/components/room/RoomCreateCard'
-import { onMounted, onBeforeUnmount } from 'vue'
-import { rooms } from '@/services/SocketService'
+import { rooms } from '@/composition/Global'
 
 export default {
 	name: 'Home',

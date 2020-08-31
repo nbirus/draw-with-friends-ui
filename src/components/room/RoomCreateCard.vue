@@ -1,7 +1,7 @@
 
 <script>
 import { ref } from 'vue'
-import { createRoom } from '@/services/SocketService'
+import { createRoom } from '@/composition/Room'
 
 export default {
 	name: 'room-create-card',

@@ -44,13 +44,9 @@
 </template>
 
 <script>
-import {
-	users,
-	messages,
-	globalMessage,
-} from '@/services/SocketService'
-import { ref, watch } from 'vue'
-import Chat from '@/components/Chat'
+import { users, messages, globalMessage } from '@/composition/Global'
+import { ref } from 'vue'
+import Chat from '@/components/utils/Chat'
 
 export default {
 	name: 'toolbar',

@@ -45,13 +45,10 @@
 </template>
 
 <script>
-import Board from '@/components/Board'
-import {
-	gameState,
-	roomState,
-	sendGuessMessage,
-} from '@/services/SocketService'
-import { ref, onMounted, watch } from 'vue'
+import Board from '@/components/game/Board'
+import { gameState, sendGuess } from '@/composition/Game'
+import { roomState } from '@/composition/Room'
+import { ref, watch } from 'vue'
 
 export default {
 	name: 'GamePage',
@@ -64,8 +61,6 @@ export default {
 	setup() {
 		const overlay = ref(true)
 		const guess = ref('')
-		const usersLeft = ref([])
-		const usersRight = ref([])
 		const usersList = ref(Object.values(roomState.room.users))
 		const usersLength = Object.values(roomState.room.users).length
 
@@ -76,7 +71,7 @@ export default {
 		}
 
 		function guessSubmit() {
-			sendGuessMessage(guess.value)
+			sendGuess(guess.value)
 			guess.value = ''
 		}
 
