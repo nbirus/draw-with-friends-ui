@@ -23,7 +23,14 @@ export const roomState = reactive({
 	loading: false,
 	error: false,
 	connected: false,
+	ready: false,
 	room: {},
+})
+export const gameState = reactive({
+	timer: 0,
+	event: 'loop_start',
+	turn: '',
+	roundWord: '',
 })
 export const users = ref({})
 export const rooms = ref({})
@@ -51,6 +58,8 @@ export function setUsername(username) {
 	})
 	sessionStorage.setItem('username', userState.username)
 }
+
+// rooms
 export function createRoom(room) {
 	let roomid = uid(true)
 	roomState.loading = true
@@ -80,15 +89,6 @@ export function leaveRoom(roomid) {
 	roomState.room = {}
 	socket.emit('leave_room', roomid)
 }
-export function globalMessage(message) {
-	if (message) {
-		socket.emit('global_message', {
-			userid: userState.userid,
-			username: userState.username,
-			message,
-		})
-	}
-}
 export function roomMessage(message) {
 	if (message) {
 		socket.emit('room_message', {
@@ -99,8 +99,33 @@ export function roomMessage(message) {
 		})
 	}
 }
+export function setReady(flag) {
+	roomState.ready = flag
+	socket.emit('ready', flag)
+}
 
+// other
+export function globalMessage(message) {
+	if (message) {
+		socket.emit('global_message', {
+			userid: userState.userid,
+			username: userState.username,
+			message,
+		})
+	}
+}
 
+// game
+export function sendGuessMessage(guess) {
+	if (guess) {
+		socket.emit('guess', {
+			userid: userState.userid,
+			username: userState.username,
+			roomid: roomState.roomid,
+			guess,
+		})
+	}
+}
 
 // events
 function onConnect() {
@@ -163,6 +188,23 @@ function onJoinRoomError() {
 	roomState.room = {}
 }
 
+function onStartGame() {
+	router.push(`/${roomState.roomid}/game`)
+}
+
+function onTimer(timer) {
+	gameState.timer = timer
+}
+
+function onRoundEvent(data) {
+	gameState.event = data.event
+
+	if (data.event === 'loop_start') {
+		gameState.turn = data.turn
+		gameState.roundWord = data.roundWord
+	}
+}
+
 
 // bind socket events
 socket.on('connect', onConnect)
@@ -174,6 +216,9 @@ socket.on('join_room', onJoinRoom)
 socket.on('update_room', onUpdateRoom)
 socket.on('join_room_error', onJoinRoomError)
 socket.on('global_messages', onGlobalMessage)
+socket.on('start_game', onStartGame)
+socket.on('update_game_timer', onTimer)
+socket.on('update_game_event', onRoundEvent)
 
 // helpers
 function uid(small = false) {

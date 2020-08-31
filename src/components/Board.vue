@@ -6,15 +6,19 @@
 			@mouseup="canvasMouseUp"
 			@mousemove="canvasMouseMove"
 			id="canvas"
-			height="500"
-			width="700"
+			height="600"
+			width="800"
 		>Your browser needs to support canvas for this to work!</canvas>
 	</div>
 </template>
 
 <script>
 import { onMounted } from 'vue'
-import { socket } from '@/composition/Socket'
+import {
+	socket,
+	userState,
+	roomState,
+} from '@/services/SocketService'
 import store from '@/store'
 
 export default {
@@ -36,25 +40,24 @@ export default {
 		})
 
 		// Remove inactive clients after 3 minutes of inactivity
-		setInterval(function() {
-			for (let ident in clients) {
-				if (Date.now() - clients[ident].updated > 10000) {
-					cursors[ident].remove()
-					delete clients[ident]
-					delete cursors[ident]
-				}
-			}
-		}, 10000)
+		// setInterval(function() {
+		// 	for (let ident in clients) {
+		// 		if (Date.now() - clients[ident].updated > 10000) {
+		// 			cursors[ident].remove()
+		// 			delete clients[ident]
+		// 			delete cursors[ident]
+		// 		}
+		// 	}
+		// }, 10000)
 
 		// deal with server move
 		socket.on('moving', function(data) {
-			if (!(data.id in clients)) {
-				// a new user has come online. create a cursor for them
-				// let newCursor = document.createElement('div').classList.add('cursor')
-				// cursorsElement.appendChild(newCursor)
-				// cursors[data.id] = newCursor
-			}
-
+			// if (!(data.id in clients)) {
+			// a new user has come online. create a cursor for them
+			// let newCursor = document.createElement('div').classList.add('cursor')
+			// cursorsElement.appendChild(newCursor)
+			// cursors[data.id] = newCursor
+			// }
 			// Move the mouse pointer
 			// cursors[data.id].css({
 			// 	left: data.x,
@@ -62,7 +65,7 @@ export default {
 			// })
 
 			// Draw other user's shape
-			if (data.drawing && clients[data.id]) {
+			if (data.drawing && data.userid !== userState.userid) {
 				drawLine(
 					clients[data.id].x,
 					clients[data.id].y,
@@ -93,8 +96,9 @@ export default {
 					x: e.offsetX,
 					y: e.offsetY,
 					drawing: drawing,
-					username: username,
-					id: id,
+					username: userState.username,
+					userid: userState.userid,
+					roomid: roomState.roomid,
 				})
 				lastEmit = Date.now()
 			}
@@ -137,7 +141,7 @@ export default {
 	height: auto;
 }
 #canvas {
-	height: 500px;
-	width: 700px;
+	height: 600px;
+	width: 800px;
 }
 </style>

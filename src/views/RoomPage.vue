@@ -21,7 +21,11 @@
 			<div class="page__card card">
 				<room-users class="page__card-users" v-if="roomState.connected" :users="roomState.room.users"></room-users>
 				<div class="page__card-footer">
-					<button class="btn btn-primary btn-block" type="submit">Ready</button>
+					<button
+						@click="setReady(!roomState.ready)"
+						class="btn btn-primary btn-block"
+						type="submit"
+					>Ready</button>
 				</div>
 			</div>
 			<div class="page__chat card">
@@ -50,8 +54,9 @@ import {
 	leaveRoom,
 	roomState,
 	roomMessage,
+	setReady,
 } from '@/services/SocketService'
-import { onMounted, onBeforeUnmount, ref } from 'vue'
+import { onMounted, onUnmounted, ref, watch } from 'vue'
 import router from '@/router'
 
 export default {
@@ -65,8 +70,11 @@ export default {
 		onMounted(() => {
 			joinRoom(roomid)
 		})
-		onBeforeUnmount(() => {
-			leaveRoom(roomid)
+		onUnmounted(() => {
+			let newRoute = router.currentRoute.value
+			if (newRoute.name !== 'game') {
+				leaveRoom(roomid)
+			}
 		})
 
 		function sendRoomMessage() {
@@ -78,6 +86,7 @@ export default {
 			roomState,
 			sendRoomMessage,
 			message,
+			setReady,
 		}
 	},
 }

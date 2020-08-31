@@ -6,7 +6,7 @@ import { createRoom } from '@/services/SocketService'
 export default {
 	name: 'room-create-card',
 	setup() {
-		const roomName = ref('')
+		const roomName = ref('test')
 
 		function onSubmit() {
 			createRoom({

@@ -30,12 +30,13 @@
 
 <script>
 import Toolbar from '@/views/Toolbar'
-import { onMounted, onBeforeUnmount } from 'vue'
+import { onMounted, onBeforeUnmount, watch } from 'vue'
 import {
 	connect,
 	disconnect,
 	socketState,
 } from '@/services/SocketService'
+import router from '@/router'
 
 export default {
 	name: 'app',
@@ -49,6 +50,13 @@ export default {
 		onBeforeUnmount(() => {
 			disconnect()
 		})
+
+		watch(
+			() => socketState.error,
+			() => {
+				router.push('/')
+			}
+		)
 
 		return {
 			socketState,

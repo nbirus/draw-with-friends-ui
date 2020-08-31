@@ -1,23 +1,30 @@
 <template>
 	<div class="page game">
-		<div class="game__header">
+		<!-- <div class="game__header">
 			<router-link to="/">Leave Game</router-link>
 			<button @click="reset">Clear Drawing</button>
-		</div>
+		</div>-->
 		<div class="game__body">
 			<div class="game__scoreboard">
-				<div class="game__nameplate team-1">
+				<!-- <div class="game__nameplate team-1">
 					<div class="game__nameplate-team">Team One</div>
 					<div class="game__nameplate-score">2</div>
-				</div>
-				<div class="game__timer">2:45</div>
-				<div class="game__nameplate team-2">
+				</div>-->
+				<div class="game__timer">{{gameState.timer}}</div>
+				<div class="game__timer">{{gameState.event}}</div>
+				<div class="game__timer">{{gameState.turn}}</div>
+				<div class="game__timer">{{gameState.roundWord}}</div>
+				<!-- <div class="game__nameplate team-2">
 					<div class="game__nameplate-score">5</div>
 					<div class="game__nameplate-team">Team Two</div>
-				</div>
+				</div>-->
 			</div>
 
-			<div class="game__board card">
+			<form class="mb-10" @submit.prevent="guessSubmit">
+				<input class="input" type="text" v-model="guess" />
+			</form>
+			{{roomState.room.users}}
+			<div class="game__board card" v-if="false">
 				<board ref="board" />
 			</div>
 		</div>
@@ -26,6 +33,12 @@
 
 <script>
 import Board from '@/components/Board'
+import {
+	gameState,
+	roomState,
+	sendGuessMessage,
+} from '@/services/SocketService'
+import { ref } from 'vue'
 
 export default {
 	name: 'GamePage',
@@ -34,6 +47,21 @@ export default {
 		reset() {
 			this.$refs.board.reset()
 		},
+	},
+	setup() {
+		let guess = ref('')
+
+		function guessSubmit() {
+			sendGuessMessage(guess.value)
+			guess.value = ''
+		}
+
+		return {
+			gameState,
+			roomState,
+			guess,
+			guessSubmit,
+		}
 	},
 }
 </script>

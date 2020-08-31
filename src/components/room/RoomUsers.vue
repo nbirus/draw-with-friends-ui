@@ -6,7 +6,7 @@
 			</div>
 			<div v-else>
 				<span>{{user.username}}</span>
-				<i class="icon circle"></i>
+				<i class="icon circle" :class="{ ready: user.ready }"></i>
 			</div>
 		</li>
 	</ul>
@@ -69,6 +69,10 @@ export default {
 			width: 1rem;
 			height: 1rem;
 			border-radius: 50%;
+
+			&.ready {
+				background-color: $green;
+			}
 		}
 	}
 }

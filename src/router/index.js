@@ -22,11 +22,11 @@ const routes = [{
 		name: 'room',
 		component: () => import( /* webpackChunkName: "room" */ '../views/RoomPage.vue'),
 	},
-	// {
-	// 	path: '/:id',
-	// 	name: 'game',
-	// 	component: () => import( /* webpackChunkName: "game" */ '../views/GamePage.vue'),
-	// },
+	{
+		path: '/:id/game',
+		name: 'game',
+		component: () => import( /* webpackChunkName: "game" */ '../views/GamePage.vue'),
+	},
 ]
 
 const router = createRouter({
