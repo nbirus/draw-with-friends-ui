@@ -29,7 +29,7 @@ export const roomState = reactive({
 export const gameState = reactive({
 	timer: 0,
 	event: 'loop_start',
-	turn: '',
+	turn: {},
 	roundWord: '',
 })
 export const users = ref({})
