@@ -27,5 +27,5 @@ export function setUsername(username) {
 function uid() {
 	return Math.random()
 		.toString(16)
-		.slice(2)
+		.slice(10)
 }
