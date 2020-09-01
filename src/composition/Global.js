@@ -1,6 +1,7 @@
 import socket from '@/services/SocketService'
 import { ref, reactive } from 'vue'
 import { userState, setUserInfo } from '@/composition/User'
+const LOG = false
 
 export const socketState = reactive({
 	loading: false,
@@ -23,7 +24,6 @@ export function globalMessage(message) {
 	if (message) {
 		socket.emit('global_message', {
 			userid: userState.userid,
-			username: userState.username,
 			message,
 		})
 	}
@@ -31,7 +31,7 @@ export function globalMessage(message) {
 
 // event handlers
 function onConnect() {
-	console.info('global:connceted')
+	log('connceted')
 	socketState.loading = false
 	socketState.connected = true
 	socketState.error = false
@@ -41,7 +41,7 @@ function onConnect() {
 }
 
 function onConnectError() {
-	console.info('global:conncetion_error')
+	log('conncetion_error')
 	socketState.loading = false
 	socketState.connected = false
 	socketState.error = true
@@ -49,24 +49,24 @@ function onConnectError() {
 }
 
 function onDisconnect() {
-	console.info('global:disconnect')
+	log('disconnect')
 	socketState.loading = false
 	socketState.connected = false
 	socketState.error = false
 }
 
 function onUsersUpdate(newUsers) {
-	console.info('global:update-users')
+	log('update-users')
 	users.value = newUsers
 }
 
 function onRoomsUpdate(newRooms) {
-	console.info('global:update-rooms')
+	log('update-rooms')
 	rooms.value = newRooms
 }
 
 function onGlobalMessage(newMessages) {
-	console.info('global:update-messages')
+	log('update-messages')
 	messages.value = newMessages
 }
 
@@ -77,3 +77,10 @@ socket.on('disconnect', onDisconnect)
 socket.on('update_users', onUsersUpdate)
 socket.on('update_rooms', onRoomsUpdate)
 socket.on('global_messages', onGlobalMessage)
+
+// helpers
+function log(event) {
+	if (LOG) {
+		console.log(`global:${event}`)
+	}
+}

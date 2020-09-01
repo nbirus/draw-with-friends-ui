@@ -2,6 +2,7 @@ import socket from '@/services/SocketService'
 import { userState } from '@/composition/User'
 import { reactive } from 'vue'
 import router from '@/router'
+const LOG = false
 
 export const roomState = reactive({
 	roomid: '',
@@ -25,7 +26,7 @@ export function createRoom(room) {
 	router.push(`/${roomid}`)
 }
 export function joinRoom(roomid) {
-	console.info('socket:joining-room')
+	log('joining-room')
 	roomState.roomid = roomid
 	roomState.loading = true
 	roomState.error = false
@@ -34,7 +35,7 @@ export function joinRoom(roomid) {
 	socket.emit('join_room', roomid)
 }
 export function leaveRoom(roomid) {
-	console.info('socket:leaving-room')
+	log('leaving-room')
 	roomState.roomid = ''
 	roomState.loading = false
 	roomState.error = false
@@ -45,21 +46,20 @@ export function leaveRoom(roomid) {
 export function roomMessage(message) {
 	if (message) {
 		socket.emit('room_message', {
-			roomid: roomState.roomid,
 			userid: userState.userid,
-			username: userState.username,
 			message,
 		})
 	}
 }
 export function setReady(flag) {
+	log('set-ready')
 	roomState.ready = flag
 	socket.emit('ready', flag)
 }
 
 // event handlers
 function onJoinRoom(room) {
-	console.log('room:join', room.roomid)
+	log('join')
 	roomState.loading = false
 	roomState.error = false
 	roomState.connected = true
@@ -67,30 +67,41 @@ function onJoinRoom(room) {
 }
 
 function onUpdateRoom(room) {
-	console.log('room:update', room.roomid)
+	log('update', room.roomid)
 	roomState.room = room
 }
 
 function onJoinRoomError() {
-	console.log('room:join-error')
+	log('join-error')
 	roomState.loading = false
 	roomState.error = true
 	roomState.connected = false
 	roomState.room = {}
 }
 
-function onJoinReady() {
-	console.log('room:ready')
+function onGameStart() {
+	log('start')
 	router.push(`/${roomState.roomid}/game`)
+}
+
+function onGameOver() {
+	log('end')
+	router.push(`/${roomState.roomid}/results`)
 }
 
 // events
 socket.on('join_room', onJoinRoom)
 socket.on('update_room', onUpdateRoom)
 socket.on('join_room_error', onJoinRoomError)
-socket.on('room_ready', onJoinReady)
+socket.on('game_start', onGameStart)
+socket.on('game_over', onGameOver)
 
 // helpers
+function log(event) {
+	if (LOG) {
+		console.log(`room:${event}`)
+	}
+}
 function uid() {
 	return Math.random()
 		.toString(16)

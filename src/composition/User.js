@@ -1,5 +1,6 @@
 import socket from '@/services/SocketService'
 import { reactive } from 'vue'
+const LOG = false
 
 // create state
 export const userState = reactive({
@@ -10,11 +11,13 @@ export const userState = reactive({
 
 // actions
 export function setUserInfo() {
+	log('set-user')
 	socket.emit('set_user', userState)
 	sessionStorage.setItem('userid', userState.userid)
 	sessionStorage.setItem('username', userState.username)
 }
 export function setUsername(username) {
+	log('set-name')
 	userState.username = username
 	socket.emit('set_user', {
 		...userState,
@@ -24,6 +27,11 @@ export function setUsername(username) {
 }
 
 // helpers
+function log(event) {
+	if (LOG) {
+		console.log(`user:${event}`)
+	}
+}
 function uid() {
 	return Math.random()
 		.toString(16)

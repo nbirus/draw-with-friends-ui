@@ -2,12 +2,17 @@ import socket from '@/services/SocketService'
 import { reactive } from 'vue'
 import { userState } from '@/composition/User'
 import { roomState } from '@/composition/Room'
+const LOG = true
 
 export const gameState = reactive({
 	timer: 0,
-	event: 'loop_start',
-	turn: {},
+	event: '',
 	roundWord: '',
+	turnIndex: 1,
+	round: 1,
+	numberOfRounds: 5,
+	numberOfTurns: 4,
+	roundTimer: 10,
 })
 
 export function sendGuess(guess) {
@@ -26,15 +31,27 @@ function onTimer(timer) {
 	gameState.timer = timer
 }
 
-function onRoundEvent(data) {
+function onGameEvent(data) {
+	log(data.event)
 	gameState.event = data.event
-
-	if (data.event === 'loop_start') {
-		gameState.turn = data.turn
-		gameState.roundWord = data.roundWord
-	}
+	gameState.event = data.event || gameState.event
+	gameState.turnIndex = data.turnIndex || gameState.turnIndex
+	gameState.round = data.round || gameState.round
+	gameState.roundWord = data.roundWord || gameState.roundWord
+	gameState.numberOfRounds =
+		data.numberOfRounds || gameState.numberOfRounds
+	gameState.numberOfTurns =
+		data.numberOfTurns || gameState.numberOfTurns
+	gameState.roundTimer = data.roundTimer || gameState.roundTimer
 }
 
 // events
 socket.on('update_game_timer', onTimer)
-socket.on('update_game_event', onRoundEvent)
+socket.on('update_game_event', onGameEvent)
+
+// helpers
+function log(event) {
+	if (LOG) {
+		console.log(`game:${event}`)
+	}
+}
