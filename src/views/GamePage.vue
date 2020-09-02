@@ -5,20 +5,28 @@
 				<pre>{{ gameState }}</pre>
 			</div>
 			<div class="card">
-				<pre>{{ roomState }}</pre>
+				<pre>{{ roomState.room.users }}</pre>
 			</div>
 		</div>
 		<div class="main">
 			<form @submit.prevent="guessSubmit">
 				<input
-					:disabled="gameState.event !== 'round_start'"
+					:disabled="gameState.event !== 'turn-start' || gameState.drawing"
 					placeholder="Type to guess..."
-					class="input input-medium"
+					class="input input-medium mr-2"
 					type="text"
 					v-model="guess"
 				/>
 				<button class="btn btn-primary btn-medium">Send</button>
 			</form>
+
+			<ul>
+				<li v-for="(user, userid, i) in roomState.room.users" :key="i">
+					<span class="mr-2">{{user.username}}</span>
+					<span class="mr-2">match: {{user.match}}</span>
+					<span>drawing: {{user.userid === gameState.turnUser.userid}}</span>
+				</li>
+			</ul>
 		</div>
 	</div>
 </template>
@@ -60,6 +68,7 @@ export default {
 	}
 	.main {
 		flex: 0 1 100%;
+		padding: 2rem;
 	}
 }
 </style>

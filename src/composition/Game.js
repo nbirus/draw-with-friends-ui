@@ -1,18 +1,25 @@
 import socket from '@/services/SocketService'
-import { reactive } from 'vue'
-import { userState } from '@/composition/User'
-import { roomState } from '@/composition/Room'
+import {
+	reactive
+} from 'vue'
+import {
+	userState
+} from '@/composition/User'
+import {
+	roomState
+} from '@/composition/Room'
 const LOG = true
 
 export const gameState = reactive({
-	timer: 0,
 	event: '',
-	roundWord: '',
-	turnIndex: 1,
+	timer: 0,
+	word: '',
 	round: 1,
-	numberOfRounds: 5,
-	numberOfTurns: 4,
-	roundTimer: 10,
+	roundEnd: 5,
+	turn: 1,
+	turnEnd: 2,
+	turnUser: {},
+	drawing: false,
 })
 
 export function sendGuess(guess) {
@@ -31,23 +38,19 @@ function onTimer(timer) {
 	gameState.timer = timer
 }
 
-function onGameEvent(data) {
+function onUpdateGame(data) {
 	log(data.event)
-	gameState.event = data.event
-	gameState.event = data.event || gameState.event
-	gameState.turnIndex = data.turnIndex || gameState.turnIndex
-	gameState.round = data.round || gameState.round
-	gameState.roundWord = data.roundWord || gameState.roundWord
-	gameState.numberOfRounds =
-		data.numberOfRounds || gameState.numberOfRounds
-	gameState.numberOfTurns =
-		data.numberOfTurns || gameState.numberOfTurns
-	gameState.roundTimer = data.roundTimer || gameState.roundTimer
+	Object.keys(gameState).forEach(key => {
+		if (data[key] !== undefined) {
+			gameState[key] = data[key]
+		}
+	})
+	gameState.drawing = userState.userid === gameState.turnUser.userid
 }
 
 // events
+socket.on('update_game', onUpdateGame)
 socket.on('update_game_timer', onTimer)
-socket.on('update_game_event', onGameEvent)
 
 // helpers
 function log(event) {
