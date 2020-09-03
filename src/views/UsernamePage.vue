@@ -4,14 +4,9 @@
 			<h1 class="mb-6">Choose a username</h1>
 			<form @submit.prevent="setUser">
 				<div class="input-group">
-					<input
-						class="input input-large mr-3"
-						placeholder="Username"
-						type="text"
-						:value="userState.username"
-					/>
+					<input class="input input-large mr-3" placeholder="Username" type="text" :value="userState.username" />
 				</div>
-				<button class="btn btn-primary btn-large" type="submit">Next</button>
+				<button class="btn btn-primary btn-large" type="submit">Next <icon src="check" size="20" /></button>
 			</form>
 		</div>
 	</div>
@@ -49,6 +44,8 @@ export default {
 	}
 	.btn {
 		width: auto;
+		display: flex;
+		align-items: center;
 	}
 
 	form {

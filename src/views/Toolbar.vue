@@ -1,13 +1,13 @@
 <template>
 	<div class="toolbar">
-		<router-link to="/username" class="toolbar__chat-list-btn">
+		<router-link to="/username" class="toolbar__change-name-link">
 			<span>Change your name</span>
 		</router-link>
 		<div class="flex"></div>
 
 		<form @submit.prevent="sendGlobalMessage">
 			<input
-				id="messageInput"
+				id="chat-input"
 				placeholder="Say something"
 				class="input toolbar__chat-input"
 				required
@@ -15,30 +15,26 @@
 				v-model="message"
 				type="text"
 				autocomplete="off"
-				@focus="messagesOpen=true"
+				@focus="messagesOpen = true"
 			/>
 		</form>
 
-		<button class="toolbar__players-list-btn" @click="usersOpen=!usersOpen">
+		<button class="toolbar__players-list-btn" id="users-btn">
 			<i class="icon"></i>
-			<span>{{Object.keys(users).length}} online</span>
+			<span>{{ Object.keys(users).length }} online</span>
 		</button>
-		<div class="toolbar__players card" v-if="usersOpen">
-			<ul class="toolbar__players-list">
-				<li class="toolbar__players-list-item" v-for="(user, key, i) in users" :key="i">
-					<div class="username" v-text="user.username"></div>
-				</li>
-			</ul>
-		</div>
+		<transition name="chat" mode="out-in">
+			<div class="toolbar__players card" v-if="usersOpen" id="users-card">
+				<ul class="toolbar__players-list">
+					<li class="toolbar__players-list-item" v-for="(user, key, i) in users" :key="i">
+						<div class="username" v-text="user.username"></div>
+					</li>
+				</ul>
+			</div>
+		</transition>
 
 		<transition name="chat" mode="out-in">
-			<chat
-				class="toolbar__chat card chat"
-				v-if="messagesOpen"
-				:messages="messages"
-				ref="messageEl"
-				id="messageEl"
-			/>
+			<chat class="toolbar__chat card chat" v-if="messagesOpen" :messages="messages" id="chat-card" />
 		</transition>
 	</div>
 </template>
@@ -55,7 +51,6 @@ export default {
 		const usersOpen = ref(false)
 		const messagesOpen = ref(false)
 		const message = ref('')
-		let messageEl = ref()
 
 		function sendGlobalMessage() {
 			globalMessage(message.value)
@@ -63,30 +58,33 @@ export default {
 		}
 
 		document.addEventListener('click', function(e) {
-			var level = 0
 			let isOpen = false
-			for (
-				var element = e.target;
-				element;
-				element = element.parentNode
-			) {
-				if (
-					element.id === 'messageEl' ||
-					element.id === 'messageInput'
-				) {
+			for (var element = e.target; element; element = element.parentNode) {
+				if (element.id === 'chat-card' || element.id === 'chat-input') {
 					isOpen = true
 					return
 				}
-				level++
 			}
-
 			messagesOpen.value = isOpen
+		})
+		document.addEventListener('click', function(e) {
+			let isOpen = false
+			for (var element = e.target; element; element = element.parentNode) {
+				if (element.id === 'users-btn') {
+					usersOpen.value = !usersOpen.value
+					return
+				}
+				if (element.id === 'users-card') {
+					isOpen = true
+					return
+				}
+			}
+			usersOpen.value = isOpen
 		})
 
 		return {
 			users,
 			message,
-			messageEl,
 			messagesOpen,
 			messages,
 			usersOpen,
@@ -111,6 +109,10 @@ export default {
 		flex: 0 1 100%;
 	}
 
+	&__change-name-link {
+		flex: 0 0 auto;
+		margin-left: 1rem;
+	}
 	&__players-list-btn {
 		flex: 0 0 auto;
 		height: 55px;
@@ -138,12 +140,14 @@ export default {
 		}
 	}
 	&__players {
-		position: absolute;
+		position: fixed;
 		width: 250px;
-		height: 400px;
+		height: auto;
 		background-color: #fff;
-		top: -416px;
+		bottom: 4.25rem;
 		right: 1rem;
+		padding: 0.5rem 0;
+		box-shadow: $box-shadow-small;
 	}
 	&__players-list {
 		margin: 0;
@@ -168,14 +172,17 @@ export default {
 		background-color: lighten($grey, 30);
 	}
 	&__chat {
-		position: absolute;
+		position: fixed;
 		width: 300px;
-		height: 400px;
+		max-height: 400px;
+		height: auto;
 		background-color: #fff;
-		top: -416px;
+		bottom: 4.25rem;
 		right: 9rem;
 		overflow-y: auto;
 		z-index: -1;
+		box-shadow: $box-shadow-small;
+		padding: 0.5rem 0;
 	}
 	&__chat-list {
 		margin: 0;

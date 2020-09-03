@@ -15,20 +15,23 @@
 	</div>
 	<div class="page room" v-else>
 		<div class="page__header">
-			<h1 class="mb-10">{{roomState.room.name}}</h1>
+			<h1 class="mb-10">{{ roomState.room.name }}</h1>
 		</div>
 		<div class="page__body">
 			<div class="page__card card">
 				<room-users class="page__card-users" v-if="roomState.connected" :users="roomState.room.users"></room-users>
 				<div class="page__card-footer">
 					<button
-						@click="setReady(!roomState.ready)"
-						class="btn btn-primary btn-block"
 						type="submit"
-					>Ready</button>
+						class="btn page__card-footer-btn btn-block"
+						:class="roomState.ready ? 'btn-green ready' : ''"
+						@click="setReady(!roomState.ready)"
+					>
+						{{ roomState.ready ? 'Ready' : 'Ready up' }}
+					</button>
 				</div>
 			</div>
-			<div class="page__chat card">
+			<div class="page__chat card" v-if="false">
 				<chat :messages="roomState.room.messages" />
 				<div class="page__card-footer">
 					<form @submit.prevent="sendRoomMessage">
@@ -81,6 +84,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '@/styles/variables.scss';
+
 .page {
 	padding: 3rem;
 	opacity: 1;
@@ -126,6 +131,21 @@ export default {
 
 		&-footer {
 			padding: 1rem;
+
+			&-btn.ready {
+				.icon {
+					background-color: darken($green, 10);
+				}
+			}
+
+			.icon {
+				position: absolute;
+				right: 2rem;
+				height: 1rem;
+				width: 1rem;
+				border-radius: 50%;
+				background-color: fade-out(white, 0.5);
+			}
 		}
 	}
 	&__chat {
