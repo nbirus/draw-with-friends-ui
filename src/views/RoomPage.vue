@@ -49,14 +49,8 @@
 <script>
 import Chat from '@/components/utils/Chat'
 import RoomUsers from '@/components/room/RoomUsers'
-import {
-	joinRoom,
-	leaveRoom,
-	roomMessage,
-	setReady,
-	roomState,
-} from '@/composition/Room'
-import { onMounted, onUnmounted, ref } from 'vue'
+import { joinRoom, roomMessage, setReady, roomState } from '@/composition/Room'
+import { onMounted, ref } from 'vue'
 import router from '@/router'
 
 export default {
@@ -69,12 +63,6 @@ export default {
 
 		onMounted(() => {
 			joinRoom(roomid)
-		})
-		onUnmounted(() => {
-			let newRoute = router.currentRoute.value
-			if (newRoute.name !== 'game') {
-				leaveRoom(roomid)
-			}
 		})
 
 		function sendRoomMessage() {

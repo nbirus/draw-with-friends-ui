@@ -45,8 +45,9 @@ function onUpdateGame(data) {
 			gameState[key] = data[key]
 		}
 	})
-	gameState.drawing = userState.userid === gameState.turnUser.userid
+	gameState.drawing = userState.userid === gameState.turnUser.userid && data.event === 'turn-start'
 }
+
 
 // events
 socket.on('update_game', onUpdateGame)

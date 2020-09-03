@@ -6,7 +6,7 @@ import { createRoom } from '@/composition/Room'
 export default {
 	name: 'room-create-card',
 	setup() {
-		const roomName = ref('test')
+		const roomName = ref('Room Name')
 
 		function onSubmit() {
 			createRoom({

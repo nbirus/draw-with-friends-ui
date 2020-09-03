@@ -1,6 +1,10 @@
 import socket from '@/services/SocketService'
-import { userState } from '@/composition/User'
-import { reactive } from 'vue'
+import {
+	userState
+} from '@/composition/User'
+import {
+	reactive
+} from 'vue'
 import router from '@/router'
 const LOG = false
 
@@ -10,7 +14,30 @@ export const roomState = reactive({
 	error: false,
 	connected: false,
 	ready: false,
-	room: {},
+	room: {
+		users: {
+			"10934": {
+				"guesses": [],
+				"connected": true,
+				"ready": true,
+				"match": false,
+				"score": 1,
+				"userid": "10934",
+				"username": "username one",
+				"roomid": "f771"
+			},
+			"b12d8": {
+				"guesses": [],
+				"connected": true,
+				"ready": true,
+				"match": false,
+				"score": 0,
+				"userid": "b12d8",
+				"username": "username two",
+				"roomid": "f771"
+			}
+		}
+	},
 })
 
 // actions
@@ -102,6 +129,7 @@ function log(event) {
 		console.log(`room:${event}`)
 	}
 }
+
 function uid() {
 	return Math.random()
 		.toString(16)

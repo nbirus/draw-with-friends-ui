@@ -1,5 +1,5 @@
 <template>
-	<div class="board">
+	<div class="board" :class="{ disabled: !gameState.drawing }">
 		<div id="cursors"></div>
 		<canvas
 			@mousedown="canvasMouseDown"
@@ -17,6 +17,7 @@ import { onMounted } from 'vue'
 import socket from '@/services/SocketService'
 import { userState } from '@/composition/User'
 import { roomState } from '@/composition/Room'
+import { gameState } from '@/composition/Game'
 
 export default {
 	name: 'board',
@@ -47,7 +48,7 @@ export default {
 		// 	}
 		// }, 10000)
 
-		// deal with server move
+		// events
 		socket.on('moving', function(data) {
 			// if (!(data.id in clients)) {
 			// a new user has come online. create a cursor for them
@@ -63,18 +64,14 @@ export default {
 
 			// Draw other user's shape
 			if (data.drawing && data.userid !== userState.userid) {
-				drawLine(
-					clients[data.id].x,
-					clients[data.id].y,
-					data.x,
-					data.y
-				)
+				drawLine(clients[data.id].x, clients[data.id].y, data.x, data.y)
 			}
 
 			// Saving the current client state
 			clients[data.id] = data
 			clients[data.id].updated = Date.now()
 		})
+		socket.on('clear_board', clearBoard)
 
 		// canvas events
 		function canvasMouseDown(e) {
@@ -114,7 +111,7 @@ export default {
 		}
 
 		// methods
-		function reset() {
+		function clearBoard() {
 			ctx.clearRect(0, 0, canvas.width, canvas.height)
 			ctx.beginPath()
 			var w = canvas.width
@@ -123,10 +120,11 @@ export default {
 		}
 
 		return {
-			reset,
+			clearBoard,
 			canvasMouseDown,
 			canvasMouseUp,
 			canvasMouseMove,
+			gameState,
 		}
 	},
 }
@@ -136,6 +134,9 @@ export default {
 .board {
 	width: auto;
 	height: auto;
+}
+.board.disabled {
+	pointer-events: none;
 }
 #canvas {
 	height: 600px;
