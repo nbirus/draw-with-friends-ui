@@ -68,10 +68,20 @@ export default {
 						<room-users class="page__card-users" v-if="roomState.connected" :users="roomState.room.users"></room-users>
 					</div>
 
-					<!-- colors -->
-					<div class="page__card-colors">
-						<room-colors :value="gameState.color" :users="roomState.room.users" @input="setColor" />
+					<!-- ready -->
+					<div class="page__card-ready">
+						<button
+							type="submit"
+							class="btn page__card-footer-btn btn-block"
+							:class="roomState.ready ? 'btn-green ready' : ''"
+							@click="setReady(!roomState.ready)"
+						>{{ roomState.ready ? 'Ready' : 'Ready up' }}</button>
 					</div>
+
+					<!-- colors -->
+					<!-- <div class="page__card-colors">
+						<room-colors :value="gameState.color" :users="roomState.room.users" @input="setColor" />
+					</div>-->
 				</div>
 				<div class="page__card-right">
 					<!-- chat -->
@@ -86,18 +96,9 @@ export default {
 									autocomplete="off"
 									v-model="message"
 								/>
+								<i class="ri-send-plane-fill"></i>
 							</form>
 						</div>
-					</div>
-
-					<!-- ready -->
-					<div class="page__card-ready">
-						<button
-							type="submit"
-							class="btn page__card-footer-btn btn-block"
-							:class="roomState.ready ? 'btn-green ready' : ''"
-							@click="setReady(!roomState.ready)"
-						>{{ roomState.ready ? 'Ready' : 'Ready up' }}</button>
 					</div>
 				</div>
 			</div>
@@ -147,14 +148,13 @@ export default {
 		justify-content: center;
 	}
 	&__card {
-		width: 600px;
-		padding: 2.5rem;
+		width: 650px;
+		height: 450px;
 		display: flex;
 		flex-direction: row;
 
 		&-left {
-			flex: 0 0 calc(50% - 2rem);
-			padding-right: 2rem;
+			flex: 0 0 50%;
 		}
 		&-right {
 			flex: 0 0 50%;
@@ -162,7 +162,8 @@ export default {
 		&-users {
 			display: flex;
 			flex-direction: column;
-			margin-bottom: 1rem;
+			align-items: center;
+			padding: 1.25rem 1.5rem;
 		}
 		&-colors {
 			padding: 0 0.25rem;
@@ -171,37 +172,52 @@ export default {
 		}
 		&-chat {
 			width: 100%;
-			height: 350px;
+			height: 100%;
 			padding: 0;
-			background-color: $light;
+			border-left: solid thin $border-color-light;
+			background-color: lighten($text, 90);
 			margin-bottom: 1rem;
 			display: flex;
 			flex-direction: column;
-			border-radius: $border-radius;
-			overflow: hidden;
 
 			.chat {
 				flex: 0 1 100%;
 				width: 100%;
-				overflow-y: scroll;
 			}
 
 			&-footer {
 				flex: 0 0 auto;
 				border-top: solid thin $border-color-light;
+				position: relative;
+
+				i {
+					font-size: 1.3rem;
+					position: absolute;
+					top: 1rem;
+					right: 1rem;
+					color: $text;
+				}
 			}
 			&-input {
 				width: 100%;
 				margin: 0;
+				height: 50px;
 				background-color: transparent;
 				border: none;
 				overflow: hidden;
+				box-shadow: none;
+				outline: none !important;
+				border-radius: 0px;
+
+				&:focus {
+					// background-color: fade-out(white, 0.5);
+				}
 			}
-			// input {
-			// 	border-radius: 0 0 $border-radius $border-radius;
-			// }
 		}
 		&-ready {
+			padding: 1rem;
+			border-top: solid thin $border-color-light;
+
 			button {
 				// background-color: $light;
 				border: none;

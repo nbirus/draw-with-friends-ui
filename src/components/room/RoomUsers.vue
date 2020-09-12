@@ -54,6 +54,7 @@ export default {
 <style lang="scss" scoped>
 @import '@/styles/variables.scss';
 .users {
+	width: 100%;
 	margin: 0;
 	padding: 0;
 	display: grid;
@@ -62,7 +63,7 @@ export default {
 	grid-gap: 1rem;
 
 	&__user {
-		height: 64px;
+		height: 60px;
 		width: 100%;
 		margin: 0;
 		position: relative;
@@ -80,9 +81,10 @@ export default {
 		&-username {
 			padding: 0 1.5rem;
 			flex: 0 1 100%;
-			font-size: 1.1rem;
+			font-size: 1.2rem;
 			display: flex;
 			align-items: center;
+			justify-content: center;
 		}
 		&-ready {
 			flex: 0 0 60px;
@@ -91,6 +93,7 @@ export default {
 			align-items: center;
 			justify-content: center;
 			border-radius: 60px 0 0 0;
+			display: none;
 
 			.ready-icon {
 				width: 2rem;
@@ -122,7 +125,6 @@ export default {
 						left: 0;
 						right: 0;
 						bottom: 0;
-						// background-color: fade-out(green, 0.35);
 					}
 
 					.users__user-ready {

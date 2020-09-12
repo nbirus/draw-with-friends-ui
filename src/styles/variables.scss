@@ -14,7 +14,7 @@ $purple: #b10dc9;
 $black: #111111;
 $grey: #aaaaaa;
 $silver: #dddddd;
-$light: lighten(black, 95);
+$light: lighten($black, 90);
 
 $colors: $navy 'navy',
 $blue 'blue',
