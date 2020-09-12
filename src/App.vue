@@ -21,28 +21,17 @@
 			</transition>
 		</router-view>
 
-		<!-- toolbar -->
-		<toolbar v-if="$route.name === 'rooms'" class="draw__toolbar" />
-
 		<!-- dialogs -->
 	</div>
 </template>
 
 <script>
-import Toolbar from '@/views/Toolbar'
 import { onMounted, onBeforeUnmount, watch } from 'vue'
-import {
-	connect,
-	disconnect,
-	socketState,
-} from '@/composition/Global'
+import { connect, disconnect, socketState } from '@/composition/Global'
 import router from '@/router'
 
 export default {
 	name: 'app',
-	components: {
-		Toolbar,
-	},
 	setup() {
 		onMounted(() => {
 			connect()
@@ -94,14 +83,6 @@ export default {
 	}
 	&__content {
 		z-index: 1;
-	}
-	&__toolbar {
-		position: fixed;
-		bottom: 0;
-		left: 0;
-		right: 0;
-		height: 55px;
-		z-index: 3;
 	}
 }
 </style>

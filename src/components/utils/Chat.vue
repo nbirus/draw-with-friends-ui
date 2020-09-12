@@ -49,7 +49,7 @@ function gotoBottom(element) {
 		padding: 0;
 
 		&-item {
-			padding: 0.75rem 1rem;
+			padding: 0.5rem 1rem;
 
 			.username {
 				font-size: 0.8rem;
@@ -62,10 +62,11 @@ function gotoBottom(element) {
 				font-size: 0.9rem;
 				display: inline;
 				line-height: 1.2;
+				color: lighten($text, 15);
 			}
 
 			&:not(:last-child) {
-				border-bottom: solid thin $border-color-light;
+				// border-bottom: solid thin $border-color-light;
 			}
 		}
 	}

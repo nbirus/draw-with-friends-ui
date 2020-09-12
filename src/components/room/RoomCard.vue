@@ -33,12 +33,13 @@ export default {
 <template>
 	<router-link :to="`/${roomid}`" ref="card" class="room-card card" :class="colors" tabindex="0">
 		<div class="room-card-popup">
-			<span>Join {{name}}</span>
-			<span class="user-count">({{usersLength}}/4)</span>
+			<span>Join</span>
+			<span class="name">{{name}}</span>
 		</div>
 
 		<div class="room-card__header">
-			<h5>{{name}}</h5>
+			<h3>{{name}}</h3>
+			<div class="room-card__header-players">{{usersLength}}/4</div>
 		</div>
 
 		<room-users class="room-card__users" :users="users"></room-users>
@@ -51,7 +52,7 @@ export default {
 .room-card-popup {
 	position: absolute;
 	border-radius: $border-radius;
-	width: 100%;
+	width: 200px;
 	height: 40px;
 	top: -3rem;
 	color: white;
@@ -65,9 +66,14 @@ export default {
 	transition: all 0.2s ease;
 	background-color: fade-out(black, 0.25);
 	font-size: 0.9rem;
+	left: calc(50% - 100px);
 
 	span {
-		position: absolute;
+		// position: absolute;
+	}
+	.name {
+		margin-left: 0.5ch;
+		text-decoration: underline;
 	}
 	.user-count {
 		right: 1rem;
@@ -81,6 +87,7 @@ export default {
 	overflow: visible;
 	color: $text;
 	text-decoration: unset;
+	width: 520px;
 
 	&:hover {
 		cursor: pointer;
@@ -112,12 +119,22 @@ export default {
 	}
 
 	&__header {
-		border-bottom: solid thin $border-color-light;
-		padding: 1rem 0;
-		text-align: center;
+		padding: 1rem 1.5rem 0.5rem;
+
+		h3 {
+			font-size: 1.75rem;
+		}
+		&-players {
+			position: absolute;
+			top: 2rem;
+			right: 2rem;
+			color: $text-light;
+			font-size: 1rem;
+			padding: 0.5rem 0.75rem;
+		}
 	}
 	&__users {
-		padding: 0;
+		padding: 0.5rem 1.5rem 1.5rem;
 		margin: 0;
 	}
 	&__user {
@@ -149,8 +166,6 @@ export default {
 	left: 0;
 	right: 0;
 	bottom: 0;
-	background-color: fade-out(black, 0.99);
-
 	display: flex;
 	align-items: center;
 	justify-content: center;

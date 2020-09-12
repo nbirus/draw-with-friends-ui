@@ -3,10 +3,13 @@ import {
 	userState
 } from '@/composition/User'
 import {
+	gameState
+} from '@/composition/Game'
+import {
 	reactive
 } from 'vue'
 import router from '@/router'
-const LOG = false
+const LOG = true
 
 export const roomState = reactive({
 	roomid: '',
@@ -14,30 +17,8 @@ export const roomState = reactive({
 	error: false,
 	connected: false,
 	ready: false,
-	room: {
-		users: {
-			"10934": {
-				"guesses": [],
-				"connected": true,
-				"ready": true,
-				"match": false,
-				"score": 1,
-				"userid": "10934",
-				"username": "username one",
-				"roomid": "f771"
-			},
-			"b12d8": {
-				"guesses": [],
-				"connected": true,
-				"ready": true,
-				"match": false,
-				"score": 0,
-				"userid": "b12d8",
-				"username": "username two",
-				"roomid": "f771"
-			}
-		}
-	},
+	room: {},
+	users: {},
 })
 
 // actions
@@ -84,6 +65,13 @@ export function setReady(flag) {
 	socket.emit('ready', flag)
 }
 
+export function setUserColor(color) {
+	log('set-color')
+	socket.emit('color', color)
+}
+
+
+
 // event handlers
 function onJoinRoom(room) {
 	log('join')
@@ -96,6 +84,7 @@ function onJoinRoom(room) {
 function onUpdateRoom(room) {
 	log('update', room.roomid)
 	roomState.room = room
+	gameState.color = room.users[userState.userid].color
 }
 
 function onJoinRoomError() {

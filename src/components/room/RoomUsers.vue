@@ -1,12 +1,20 @@
 <template>
 	<ul class="users">
-		<li class="users__user" v-for="(user, i) in usersList" :key="i">
-			<div v-if="user.userid === 'empty'" class="empty">
-				<span class="text">Waiting for user...</span>
-			</div>
-			<div v-else>
-				<span>{{user.username}}</span>
-				<i class="icon circle" :class="{ ready: user.ready }"></i>
+		<li
+			class="users__user"
+			v-for="(user, i) in usersList"
+			:key="i"
+			:class="[user.color, `ready-${user.ready}`]"
+		>
+			<!-- empty -->
+			<div v-if="user.userid === 'empty'" class="text empty"></div>
+
+			<!-- username -->
+			<div class="flex" v-else>
+				<div class="users__user-username">{{user.username}}</div>
+				<div class="users__user-ready">
+					<div class="ready-icon"></div>
+				</div>
 			</div>
 		</li>
 	</ul>
@@ -48,49 +56,97 @@ export default {
 .users {
 	margin: 0;
 	padding: 0;
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	grid-template-rows: auto auto;
+	grid-gap: 1rem;
 
 	&__user {
 		height: 64px;
-		padding: 0 1rem;
+		width: 100%;
+		margin: 0;
 		position: relative;
+		background-color: $light;
+		border-radius: $border-radius;
+		border-radius: $border-radius;
+		overflow: hidden;
 
-		display: flex;
-		align-items: center;
-		justify-content: center;
+		.flex {
+			display: flex;
+			align-items: center;
+			height: 100%;
+		}
 
-		&:not(:last-child) {
-			border-bottom: solid thin $border-color-light;
+		&-username {
+			padding: 0 1.5rem;
+			flex: 0 1 100%;
+			font-size: 1.1rem;
+			display: flex;
+			align-items: center;
+		}
+		&-ready {
+			flex: 0 0 60px;
+			height: 100%;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			border-radius: 60px 0 0 0;
+
+			.ready-icon {
+				width: 2rem;
+				height: 2rem;
+				border-radius: 50%;
+			}
 		}
 
 		.icon {
 			position: absolute;
 			right: 1rem;
-			background-color: fade-out(black, 0.9);
-			width: 1rem;
-			height: 1rem;
-			border-radius: 50%;
 
 			&.ready {
 				background-color: $green;
 			}
 		}
+
+		@each $color, $name in $colors {
+			&.#{$name} {
+				background-color: $color;
+				color: lighten($color, 60);
+
+				&.ready-true {
+					box-shadow: inset 0 0 0 4px $green;
+					&:after {
+						content: '';
+						position: absolute;
+						top: 0;
+						left: 0;
+						right: 0;
+						bottom: 0;
+						// background-color: fade-out(green, 0.35);
+					}
+
+					.users__user-ready {
+						background-color: $green;
+					}
+				}
+			}
+		}
 	}
 }
+
 .empty {
 	position: absolute;
 	top: 0;
 	left: 0;
 	right: 0;
 	bottom: 0;
-	background-color: fade-out(black, 0.99);
+	background-color: $light;
 
 	display: flex;
 	align-items: center;
-	justify-content: center;
+	padding: 0 1.5rem;
 
-	.text {
-		font-size: 0.9rem;
-		color: $text-light;
-	}
+	font-size: 0.9rem;
+	color: $text-light;
 }
 </style>

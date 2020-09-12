@@ -1,10 +1,17 @@
 /* eslint-disable */
-import { createRouter, createWebHistory } from 'vue-router'
-import { userState } from '@/composition/User'
-import { roomState, leaveRoom } from '@/composition/Room'
+import {
+	createRouter,
+	createWebHistory
+} from 'vue-router'
+import {
+	userState
+} from '@/composition/User'
+import {
+	roomState,
+	leaveRoom
+} from '@/composition/Room'
 
-const routes = [
-	{
+const routes = [{
 		path: '/',
 		name: 'rooms',
 		component: () =>
@@ -26,13 +33,19 @@ const routes = [
 		path: '/:id',
 		name: 'room',
 		component: () =>
-			import(/* webpackChunkName: "room" */ '@/views/RoomPage.vue'),
+			import( /* webpackChunkName: "room" */ '@/views/RoomPage.vue'),
 	},
 	{
 		path: '/:id/game',
 		name: 'game',
 		component: () =>
-			import(/* webpackChunkName: "game" */ '@/views/GamePage.vue'),
+			import( /* webpackChunkName: "game" */ '@/views/GamePage.vue'),
+	},
+	{
+		path: '/:id/results',
+		name: 'results',
+		component: () =>
+			import( /* webpackChunkName: "results" */ '@/views/GameResultsPage.vue'),
 	},
 ]
 
@@ -44,10 +57,6 @@ const router = createRouter({
 let prevRoute = ''
 
 router.beforeEach((to, from, next) => {
-	// leave room
-	if (roomState.roomid && ['game', 'room'].includes(from.name)) {
-		leaveRoom(roomState.roomid)
-	}
 
 	if (to.name === 'username') {
 		next()
@@ -59,6 +68,12 @@ router.beforeEach((to, from, next) => {
 		prevRoute = ''
 	} else {
 		next()
+	}
+})
+
+router.afterEach(to => {
+	if (roomState.roomid && !['game', 'room', 'results'].includes(to.name)) {
+		leaveRoom(roomState.roomid)
 	}
 })
 

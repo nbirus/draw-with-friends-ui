@@ -1,12 +1,20 @@
 <template>
 	<div class="page">
 		<div class="page__container">
-			<h1 class="mb-6">Choose a username</h1>
-			<form @submit.prevent="setUser">
+			<h1>Choose a username</h1>
+
+			<form class="page__form card card-form" @submit.prevent="setUser">
 				<div class="input-group">
-					<input class="input input-large mr-3" placeholder="Username" type="text" :value="userState.username" />
+					<input
+						required
+						class="input input-large"
+						maxlength="20"
+						placeholder="Enter a username..."
+						type="text"
+						v-model="userState.username"
+					/>
 				</div>
-				<button class="btn btn-primary btn-large" type="submit">Next <icon src="check" size="20" /></button>
+				<button class="btn btn-primary btn-large" type="submit">Next</button>
 			</form>
 		</div>
 	</div>
@@ -37,6 +45,10 @@ export default {
 		flex-direction: column;
 		align-items: center;
 		margin-top: 30vh;
+
+		h1 {
+			margin-bottom: 3rem;
+		}
 	}
 
 	.input {

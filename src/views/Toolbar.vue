@@ -5,11 +5,12 @@
 		</router-link>
 		<div class="flex"></div>
 
-		<form @submit.prevent="sendGlobalMessage">
+		<!-- <form @submit.prevent="sendGlobalMessage">
 			<input
 				id="chat-input"
-				placeholder="Say something"
+				placeholder="Say something..."
 				class="input toolbar__chat-input"
+				:class="{ open: messagesOpen }"
 				required
 				maxlength="100"
 				v-model="message"
@@ -17,9 +18,9 @@
 				autocomplete="off"
 				@focus="messagesOpen = true"
 			/>
-		</form>
+		</form>-->
 
-		<button class="toolbar__players-list-btn" id="users-btn">
+		<!-- <button class="toolbar__players-list-btn" id="users-btn">
 			<i class="icon"></i>
 			<span>{{ Object.keys(users).length }} online</span>
 		</button>
@@ -35,7 +36,7 @@
 
 		<transition name="chat" mode="out-in">
 			<chat class="toolbar__chat card chat" v-if="messagesOpen" :messages="messages" id="chat-card" />
-		</transition>
+		</transition>-->
 	</div>
 </template>
 
@@ -99,11 +100,12 @@ export default {
 @import '@/styles/variables.scss';
 
 .toolbar {
-	background-color: #fff;
-	border-top: solid thin $border-color;
+	// background-color: darken($primary, 2);
 	display: flex;
 	align-items: center;
 	justify-content: flex-end;
+	position: fixed;
+	bottom: 0;
 
 	.flex {
 		flex: 0 1 100%;
@@ -112,15 +114,20 @@ export default {
 	&__change-name-link {
 		flex: 0 0 auto;
 		margin-left: 1rem;
+		color: $text;
+		text-decoration: underline;
 	}
 	&__players-list-btn {
 		flex: 0 0 auto;
-		height: 55px;
-		background-color: #fff;
-		padding: 0 2rem;
+		height: 40px;
+		border-radius: $border-radius;
+		background-color: transparent;
+		// color: white;
+		padding: 0 1rem;
 		margin: 0;
 		font-size: 1rem;
 		margin-left: 0.5rem;
+		margin-right: 1rem;
 
 		&:hover {
 			background-color: fade-out(black, 0.9);
@@ -144,7 +151,7 @@ export default {
 		width: 250px;
 		height: auto;
 		background-color: #fff;
-		bottom: 4.25rem;
+		top: 4.25rem;
 		right: 1rem;
 		padding: 0.5rem 0;
 		box-shadow: $box-shadow-small;
@@ -168,8 +175,26 @@ export default {
 		}
 	}
 	&__chat-input {
-		width: 300px;
-		background-color: lighten($grey, 30);
+		width: 200px;
+		// background-color: lighten($grey, 30);
+		background-color: fade-out(black, 0.9);
+		color: white;
+		border: none;
+		transition: width 0.2s ease;
+
+		&::placeholder {
+			color: fade-out($text, 0.5);
+		}
+		&:focus,
+		&.open {
+			width: 300px;
+			background-color: white;
+			color: $text;
+
+			&::placeholder {
+				color: fade-out($text, 0.25);
+			}
+		}
 	}
 	&__chat {
 		position: fixed;
@@ -177,8 +202,8 @@ export default {
 		max-height: 400px;
 		height: auto;
 		background-color: #fff;
-		bottom: 4.25rem;
-		right: 9rem;
+		top: 4.25rem;
+		right: 8rem;
 		overflow-y: auto;
 		z-index: -1;
 		box-shadow: $box-shadow-small;
@@ -196,10 +221,12 @@ export default {
 			.message {
 				font-size: 0.9rem;
 				margin-top: 0.5rem;
+				font-weight: 300;
 			}
 			.username {
 				font-size: 0.8rem;
 				color: $text-light;
+				font-weight: 900;
 			}
 
 			&:not(:last-child) {

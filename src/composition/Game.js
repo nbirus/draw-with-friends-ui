@@ -14,6 +14,7 @@ export const gameState = reactive({
 	event: '',
 	timer: 0,
 	word: '',
+	color: '',
 	round: 1,
 	roundEnd: 5,
 	turn: 1,
