@@ -1,10 +1,13 @@
 <template>
 	<div class="page home">
-		<toolbar class="page__toolbar" />
+		<!-- change name -->
+		<router-link to="/username" class="page__change-name-link">
+			<span>Change your name</span>
+		</router-link>
 
 		<!-- header -->
 		<div class="page__header">
-			<h1>Create or join a game</h1>
+			<h1>Create or join a room</h1>
 		</div>
 
 		<!-- card form -->
@@ -26,26 +29,28 @@
 		<div class="page__body">
 			<transition-group name="list" tag="ul" mode="out-in" class="room-list" appear>
 				<li class="room-list__item" v-for="(room, key, i) in rooms" :key="i" :class="`delay-${i}`">
-					<room-card class="room-list__card" v-bind="room"></room-card>
+					<room-card class="room-list__card" v-bind="room" rooms></room-card>
 				</li>
 			</transition-group>
+
+			<div class="page__body-empty" v-if="Object.keys(rooms).length === 0">
+				<i class="ri-close-line mr-2"></i>No rooms found
+			</div>
 		</div>
 	</div>
 </template>
 
 <script>
-import Toolbar from '@/views/Toolbar'
-import RoomCard from '@/components/room/RoomCard'
+import RoomCard from '@/views/home-page/RoomCard'
 import { rooms } from '@/composition/Global'
 import { createRoom } from '@/composition/Room'
 import { ref } from 'vue'
 
 export default {
 	name: 'Home',
-	components: { RoomCard, Toolbar },
+	components: { RoomCard },
 	setup() {
 		const roomName = ref('')
-
 		function createRoomSubmit() {
 			createRoom({
 				name: roomName.value,
@@ -70,8 +75,12 @@ export default {
 	flex-direction: column;
 	padding: 5rem 0;
 
-	&__toolbar {
-		height: 65px;
+	&__change-name-link {
+		position: fixed;
+		bottom: 1rem;
+		left: 1rem;
+		color: $text;
+		text-decoration: underline;
 	}
 	&__header {
 		display: flex;
@@ -84,6 +93,22 @@ export default {
 	}
 	&__body {
 		margin: 0 auto;
+
+		&-empty {
+			font-size: 1.25rem;
+			color: lighten($text, 40);
+			margin-top: 2rem;
+			background-color: fade-out($text, 0.95);
+			padding: 2rem 3rem;
+			border-radius: $border-radius;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+
+			i {
+				font-size: 1.5rem;
+			}
+		}
 	}
 }
 .room-list {

@@ -13,11 +13,11 @@ import {
 
 const routes = [{
 		path: '/',
-		name: 'rooms',
+		name: 'home',
 		component: () =>
 			import(
-				/* webpackChunkName: "rooms" */
-				'@/views/RoomsPage.vue'
+				/* webpackChunkName: "home" */
+				'@/views/home-page/HomePage.vue'
 			),
 	},
 	{
@@ -26,20 +26,20 @@ const routes = [{
 		component: () =>
 			import(
 				/* webpackChunkName: "username" */
-				'@/views/UsernamePage.vue'
+				'@/views/username-page/UsernamePage.vue'
 			),
 	},
 	{
 		path: '/:id',
 		name: 'room',
 		component: () =>
-			import( /* webpackChunkName: "room" */ '@/views/RoomPage.vue'),
+			import( /* webpackChunkName: "room" */ '@/views/room-page/RoomPage.vue'),
 	},
 	{
 		path: '/:id/game',
 		name: 'game',
 		component: () =>
-			import( /* webpackChunkName: "game" */ '@/views/GamePage.vue'),
+			import( /* webpackChunkName: "game" */ '@/views/game-page/GamePage.vue'),
 	},
 	{
 		path: '/:id/results',
@@ -57,8 +57,9 @@ const router = createRouter({
 let prevRoute = ''
 
 router.beforeEach((to, from, next) => {
-
-	if (to.name === 'username') {
+	if (to.name === 'room' && roomState.active) {
+		next('game')
+	} else if (to.name === 'username') {
 		next()
 	} else if (!userState.username) {
 		prevRoute = to.fullPath

@@ -14,11 +14,11 @@
 
 		<!-- page -->
 		<router-view v-slot="{ Component }">
-			<transition name="page" mode="out-in">
-				<div class="draw__content" :key="$route.name">
-					<component :is="Component" />
-				</div>
-			</transition>
+			<!-- <transition name="page" mode="out-in"> -->
+			<div class="draw__content" :key="$route.name">
+				<component :is="Component" />
+			</div>
+			<!-- </transition> -->
 		</router-view>
 
 		<!-- dialogs -->

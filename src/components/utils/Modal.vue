@@ -1,6 +1,6 @@
 <template>
-	<div class="dialog">
-		<div class="dialog-content" :style="`width: ${width}px`">
+	<div class="dialog" v-if="open" @click.self="$emit('close')">
+		<div class="dialog-content card" :style="`width: ${width}px`">
 			<slot />
 		</div>
 	</div>
@@ -10,6 +10,7 @@
 export default {
 	name: 'dialog',
 	props: {
+		open: Boolean,
 		width: {
 			type: String,
 			default: '400',
@@ -32,9 +33,7 @@ export default {
 }
 .dialog-content {
 	background-color: #fff;
-	margin: 15% auto; /* 15% from the top and centered */
-	padding: 20px;
-	border: 1px solid #888;
-	border-radius: 0.5rem;
+	margin: 35% auto;
+	overflow: visible;
 }
 </style>

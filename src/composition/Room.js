@@ -16,6 +16,7 @@ export const roomState = reactive({
 	loading: false,
 	error: false,
 	connected: false,
+	active: false,
 	ready: false,
 	room: {},
 	users: {},
@@ -97,11 +98,13 @@ function onJoinRoomError() {
 
 function onGameStart() {
 	log('start')
+	roomState.active = true
 	router.push(`/${roomState.roomid}/game`)
 }
 
 function onGameOver() {
 	log('end')
+	roomState.active = false
 	router.push(`/${roomState.roomid}/results`)
 }
 

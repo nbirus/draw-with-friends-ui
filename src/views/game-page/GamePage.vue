@@ -17,16 +17,18 @@
 
 		<!-- header -->
 		<div class="game__header">
-			<div class="game__timer">{{gameState.timer}}</div>
 			<ul class="game__users">
 				<li
 					class="game__user"
 					v-for="(user, userid) in roomState.room.users"
 					:key="userid"
-					:class="{ match: user.match, turn: gameState.turnUser.userid === userid }"
+					:class="[{ match: user.match, turn: gameState.turnUser.userid === userid }, `striped-${user.color}`]"
 				>
 					<div class="game__user-username" v-text="user.username"></div>
-					<div class="game__user-score" v-text="user.score"></div>
+					<div class="game__user-score">
+						<i class="ri-pencil-fill" v-if="gameState.turnUser.userid === userid"></i>
+						<span v-else v-text="user.score"></span>
+					</div>
 				</li>
 			</ul>
 			<div class="game__rounds">{{gameState.round}}/{{gameState.roundEnd}}</div>
@@ -37,8 +39,14 @@
 			<div
 				class="game__board-timer"
 				v-if="['turn-pre', 'turn-start'].includes(gameState.event)"
-				:class="{'transition-width': gameState.event === 'turn-start'}"
-			></div>
+				:class="roomState.room.users[gameState.turnUser.userid].color"
+			>
+				<i class="ri-timer-fill"></i>
+				<div
+					class="bar"
+					:class="[{'transition-width': gameState.event === 'turn-start'}, `striped-${roomState.room.users[gameState.turnUser.userid].color}`]"
+				></div>
+			</div>
 			<div class="game__board card">
 				<div class="game__board-event">
 					<span
@@ -92,9 +100,10 @@
 <script>
 import Board from '@/components/game/Board'
 import { gameState, sendGuess } from '@/composition/Game'
-import { roomState, leaveRoom } from '@/composition/Room'
+import { roomState, joinRoom } from '@/composition/Room'
 import { userState } from '@/composition/User'
-import { ref, onUnmounted } from 'vue'
+import { ref, onMounted } from 'vue'
+import router from '@/router'
 
 export default {
 	name: 'GamePage',
@@ -106,6 +115,12 @@ export default {
 			sendGuess(guess.value)
 			guess.value = ''
 		}
+
+		let currentRoute = router.currentRoute.value
+		let roomid = currentRoute.params.id
+		onMounted(() => {
+			joinRoom(roomid)
+		})
 
 		return {
 			showDebug,
@@ -135,13 +150,10 @@ export default {
 		bottom: 0;
 	}
 	&__header {
-		padding: 1rem;
+		padding: 2rem;
 		display: flex;
 		align-items: center;
 		flex-direction: column;
-		background-color: #fff;
-		box-shadow: $box-shadow;
-		margin-bottom: 2rem;
 	}
 	&__rounds {
 		font-size: 0.9rem;
@@ -149,15 +161,7 @@ export default {
 		border-radius: $border-radius;
 		position: absolute;
 		right: 2rem;
-		top: 2.5rem;
-	}
-	&__timer {
-		font-size: 2.5rem;
-		margin-bottom: 1rem;
-		background-color: #fff;
-		padding: 1rem;
-		border-radius: $border-radius;
-		display: none;
+		top: 2rem;
 	}
 	&__users {
 		padding: 0;
@@ -166,19 +170,20 @@ export default {
 		align-items: center;
 	}
 	&__user {
-		background-color: #fff;
+		color: white;
 		display: flex;
 		align-items: center;
 		margin-right: 1rem;
 		border-radius: $border-radius;
 		border: solid thin $border-color-light;
+		transition: all 0.2s ease;
 
 		&.match {
 			background-color: $green;
 		}
 		&.turn {
-			// box-shadow: 0 0 0 3px $black;
-			opacity: 0.5;
+			transform: scale(1.025) translateY(-2px);
+			box-shadow: $box-shadow;
 		}
 
 		&-username {
@@ -190,7 +195,7 @@ export default {
 			padding: 1.25rem;
 			font-size: 1.2rem;
 			font-weight: 900;
-			background-color: fade-out($grey, 0.8);
+			background-color: fade-out($text, 0.8);
 		}
 	}
 	&__main {
@@ -209,19 +214,46 @@ export default {
 		&-timer {
 			position: relative;
 			width: calc(800px - 1rem);
-			height: 10px;
-			border-radius: 1rem 1rem 0 0;
-			overflow: hidden;
-			background-color: fade-out($grey, 0.8);
+			height: 24px;
+			border-radius: 1rem;
 
-			&:after {
-				content: '';
+			background-color: lighten($grey, 20);
+			margin-bottom: 1.5rem;
+
+			i {
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				color: lighten($text, 10);
+				font-size: 1.5rem;
+				background-color: lighten($grey, 20);
+				width: 2.75rem;
+				height: 2.75rem;
+				border-radius: 50%;
 				position: absolute;
-				top: 0;
-				left: 0;
-				bottom: 0;
-				width: 100%;
-				transition-property: width;
+				top: -0.65rem;
+			}
+
+			.bar {
+				position: absolute;
+				left: 2.75rem;
+				top: 6px;
+				bottom: 6px;
+				width: calc(100% - 2.75rem - 6px);
+				border-radius: 1rem;
+				background-color: lighten($grey, 0);
+				transition: width 10s;
+			}
+
+			@each $color, $name in $colors {
+				&.#{$name} {
+					background-color: lighten($color, 40);
+
+					i {
+						color: darken($color, 30);
+						background-color: lighten($color, 40);
+					}
+				}
 			}
 		}
 		&-event {
@@ -282,9 +314,7 @@ export default {
 	}
 }
 
-.transition-width:after {
-	transition-duration: 10s;
-	width: 0;
-	background-color: $blue;
+.transition-width {
+	width: 0px !important;
 }
 </style>

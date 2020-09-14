@@ -8,7 +8,7 @@
 					<input
 						required
 						class="input input-large"
-						maxlength="20"
+						maxlength="15"
 						placeholder="Enter a username..."
 						type="text"
 						v-model="userState.username"
