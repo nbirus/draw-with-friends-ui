@@ -43,26 +43,21 @@ export default {
 	<router-link :to="`/${roomid}`" ref="card" class="room-card card" :class="colors" tabindex="0">
 		<div class="room-card-popup">
 			<span>Join</span>
-			<span class="name">{{name}}</span>
+			<span class="name">{{ name }}</span>
 		</div>
 
 		<div class="room-card__header">
-			<h3>{{name}}</h3>
-			<div class="room-card__header-players">{{usersLength}}/4</div>
+			<h1>{{ name }}</h1>
+			<div class="room-card__header-players">{{ usersLength }}/4</div>
 		</div>
 		<div class="room-card__body">
 			<ul class="room-card__users">
-				<li
-					class="room-card__users-item"
-					v-for="(user, i) in usersList"
-					:key="i"
-					:class="`striped-${user.color}`"
-				>
+				<li class="room-card__users-item" v-for="(user, i) in usersList" :key="i" :class="`striped-${user.color}`">
 					<div class="empty" v-if="user.userid === 'empty'">
 						<i class="ri-user-line"></i>
 					</div>
 					<div v-else>
-						<div class="users__user-username">{{user.username}}</div>
+						<div class="users__user-username">{{ user.username }}</div>
 					</div>
 				</li>
 			</ul>
@@ -114,7 +109,7 @@ export default {
 	&__header {
 		padding: 1rem 1.5rem 0.5rem;
 
-		h3 {
+		h1 {
 			font-size: 1.75rem;
 		}
 		&-players {
