@@ -1,14 +1,8 @@
 import socket from '@/services/SocketService'
-import {
-	reactive
-} from 'vue'
-import {
-	userState
-} from '@/composition/User'
-import {
-	roomState
-} from '@/composition/Room'
-const LOG = true
+import { reactive } from 'vue'
+import { userState } from '@/composition/User'
+import { roomState } from '@/composition/Room'
+const LOG = false
 
 export const gameState = reactive({
 	event: '',
@@ -48,7 +42,6 @@ function onUpdateGame(data) {
 	})
 	gameState.drawing = userState.userid === gameState.turnUser.userid && data.event === 'turn-start'
 }
-
 
 // events
 socket.on('update_game', onUpdateGame)

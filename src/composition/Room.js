@@ -3,7 +3,7 @@ import { userState } from '@/composition/User'
 import { gameState } from '@/composition/Game'
 import { reactive } from 'vue'
 import router from '@/router'
-const LOG = true
+const LOG = false
 
 export const roomState = reactive({
 	roomid: '',
