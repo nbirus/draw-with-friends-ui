@@ -1,7 +1,7 @@
 <script>
 import Chat from '@/views/room-page/RoomPageChat'
 import RoomUsers from '@/views/room-page/RoomUsers'
-import Modal from '@/components/utils/Modal'
+import Modal from '@/components/Modal'
 
 import { joinRoom, roomMessage, setReady, roomState, setUserColor } from '@/composition/Room'
 import { gameState } from '@/composition/Game'

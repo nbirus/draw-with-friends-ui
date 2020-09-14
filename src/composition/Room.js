@@ -73,11 +73,13 @@ function onJoinRoom(room) {
 	roomState.error = false
 	roomState.connected = true
 	roomState.room = room
+	roomState.users = room.users
 }
 
 function onUpdateRoom(room) {
 	log('update', room.roomid)
 	roomState.room = room
+	roomState.users = room.users
 	gameState.color = room.users[userState.userid].color
 }
 
