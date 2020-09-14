@@ -34,7 +34,7 @@
 			</transition-group>
 
 			<div class="page__body-empty" v-if="Object.keys(rooms).length === 0">
-				<i class="ri-close-line mr-2"></i>No rooms found
+				<i class="ri-forbid-line mr-2"></i>No rooms found
 			</div>
 		</div>
 	</div>
@@ -95,10 +95,9 @@ export default {
 		margin: 0 auto;
 
 		&-empty {
-			font-size: 1.25rem;
+			font-size: 1.5rem;
 			color: lighten($text, 40);
 			margin-top: 2rem;
-			background-color: fade-out($text, 0.95);
 			padding: 2rem 3rem;
 			border-radius: $border-radius;
 			display: flex;
@@ -106,7 +105,7 @@ export default {
 			justify-content: center;
 
 			i {
-				font-size: 1.5rem;
+				font-size: 1.65rem;
 			}
 		}
 	}

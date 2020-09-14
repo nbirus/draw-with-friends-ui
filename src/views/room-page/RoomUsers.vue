@@ -119,12 +119,14 @@ export default {
 <style lang="scss" scoped>
 @import '@/styles/variables.scss';
 .users {
+	flex: 0 0 auto;
 	width: 100%;
+	height: auto;
 	margin: 0;
 	padding: 0;
 	display: grid;
-	grid-template-columns: 1fr 1fr;
-	grid-template-rows: auto auto;
+	grid-template-columns: 1fr;
+
 	grid-gap: 1rem;
 
 	&__user {

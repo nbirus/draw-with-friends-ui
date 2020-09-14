@@ -90,7 +90,7 @@ export default {
 				margin-bottom: 1rem;
 			}
 			&.empty {
-				opacity: 0.75;
+				opacity: 0.5;
 			}
 			@each $color, $name in $colors {
 				&.#{$name} .username {
@@ -146,12 +146,6 @@ export default {
 
 			&.ready {
 				padding: 0.75rem 1rem;
-				border: none;
-				opacity: 0.5;
-
-				&.ready-active {
-					opacity: 1;
-				}
 				i {
 					height: 18px;
 					width: 18px;
@@ -163,31 +157,12 @@ export default {
 			&.leave {
 				opacity: 0.8;
 
-				.username {
-					color: lighten($text, 35) !important;
-				}
 				i {
 					color: lighten($text, 35) !important;
 					background-color: fade-out($text, 0.95) !important;
 				}
 			}
 			&.countdown {
-				// padding: 0.35rem 1rem;
-				// background: repeating-linear-gradient(
-				// 	45deg,
-				// 	fade-out($yellow, 0.85),
-				// 	fade-out($yellow, 0.85) 2rem,
-				// 	fade-out($yellow, 0.9) 2rem,
-				// 	fade-out($yellow, 0.9) 4rem
-				// );
-				// background-size: 200% 200%;
-				// animation: barberpole 25s linear infinite;
-				// i {
-				// 	font-size: 1.1rem;
-				// 	color: darken($yellow, 25) !important;
-				// 	background-color: transparent;
-				// }
-
 				.username,
 				i {
 					display: none;
@@ -195,7 +170,6 @@ export default {
 				.message {
 					font-size: 0.8rem;
 					color: lighten($text, 40);
-					// color: darken($yellow, 35);
 				}
 			}
 			&.countdown-cancel {

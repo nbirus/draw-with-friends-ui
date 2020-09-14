@@ -5,14 +5,16 @@ import Modal from '@/components/Modal'
 
 import { joinRoom, roomMessage, setReady, roomState, setUserColor } from '@/composition/Room'
 import { gameState } from '@/composition/Game'
-import { computed, onMounted, ref } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
 import get from 'lodash/get'
 import router from '@/router'
+import copy from 'copy-to-clipboard'
 
 export default {
 	name: 'room-page',
 	components: { RoomUsers, Modal, Chat },
 	setup() {
+		let shareInput = ref(null)
 		let shareDialog = ref(false)
 		let message = ref('')
 		let usersLength = computed(() => {
@@ -34,7 +36,18 @@ export default {
 			setUserColor(color)
 		}
 
+		function copyLink() {
+			copy(`localhost:8080/${roomid}`)
+		}
+
+		watch(shareDialog, flag => {
+			if (flag) {
+				shareInput.value.select()
+			}
+		})
+
 		return {
+			shareInput,
 			shareDialog,
 			roomState,
 			gameState,
@@ -43,6 +56,7 @@ export default {
 			setReady,
 			setColor,
 			usersLength,
+			copyLink,
 		}
 	},
 }
@@ -71,12 +85,11 @@ export default {
 			<h1>{{ roomState.room.name }}</h1>
 		</div>
 		<div class="page__body">
-			<div class="page__card card" :class="{ 'ready': roomState.ready }">
+			<div class="page__card card" :class="{ ready: roomState.ready }">
 				<div class="page__card-left">
 					<!-- users -->
 					<div class="page__card-users">
 						<room-users
-							class="page__card-users"
 							v-if="roomState.connected"
 							:users="roomState.room.users"
 							@input="setColor"
@@ -120,24 +133,26 @@ export default {
 			</div>
 		</div>
 
-		<modal width="500" :open="shareDialog" @close="shareDialog=false">
+		<modal width="450" :open="shareDialog" @close="shareDialog = false">
 			<div class="page__share">
-				<h5>Share this link with your friends</h5>
+				<div class="page__share-header">
+					<i class="ri-share-line mr-2"></i>
+					<h5>Share this link with your friends...</h5>
+				</div>
 
-				<form class="page__form card card-form" @submit.prevent="setUser">
+				<form class="page__form card card-form" @submit.prevent="copyLink">
 					<div class="input-group">
 						<input
-							required
+							ref="shareInput"
 							class="input input-medium"
 							maxlength="15"
 							placeholder
 							type="text"
+							@input.prevent="() => {}"
 							:value="`localhost:8080${$route.fullPath}`"
 						/>
 					</div>
-					<button class="btn btn-primary btn-medium" type="submit">
-						<i class="ri-clipboard-line"></i> Copy
-					</button>
+					<button class="btn btn-primary btn-medium" type="submit">Copy</button>
 				</form>
 			</div>
 		</modal>
@@ -210,31 +225,38 @@ export default {
 		flex-direction: row;
 		overflow: hidden;
 
-		&.ready {
-			&:after {
-				content: '';
-				box-shadow: inset 0 0 0 2px $green;
-				border-radius: $border-radius;
-				position: absolute;
-				top: 0;
-				left: 0;
-				right: 0;
-				bottom: 0;
-				pointer-events: none;
-			}
+		&:after {
+			content: '';
+			box-shadow: inset 0 0 0 0 $green;
+			border-radius: $border-radius;
+			position: absolute;
+			top: 0;
+			left: 0;
+			right: 0;
+			bottom: 0;
+			pointer-events: none;
+			transition: box-shadow 0.2s ease;
+		}
+
+		&.ready:after {
+			box-shadow: inset 0 0 0 4px $green;
 		}
 
 		&-left {
 			flex: 0 0 50%;
+			display: flex;
+			flex-direction: column;
 		}
 		&-right {
 			flex: 0 0 50%;
 		}
 		&-users {
+			flex: 0 1 100%;
 			display: flex;
 			flex-direction: column;
 			align-items: center;
-			padding: 1.25rem 1.75rem;
+			justify-content: center;
+			padding: 0 2rem;
 		}
 		&-colors {
 			padding: 0 0.25rem;
@@ -265,7 +287,7 @@ export default {
 					font-size: 1.3rem;
 					position: absolute;
 					top: 1rem;
-					right: 2rem;
+					right: 1rem;
 					color: $text;
 				}
 			}
@@ -290,15 +312,19 @@ export default {
 				border: solid thin $border-color-light;
 				height: 50px;
 				position: relative;
+				border-radius: none;
+				font-weight: 700;
 
 				span:after {
 					content: 'Not ready';
+					color: lighten($text, 50);
 				}
 				&.ready {
 					border: solid thin darken($green, 10);
 
 					span:after {
 						content: 'Ready';
+						color: white;
 					}
 				}
 				&.not-enough {
@@ -366,21 +392,40 @@ export default {
 		display: flex;
 		flex-direction: column;
 		align-items: center;
-		padding: 2.5rem 1rem;
+		padding: 1.5rem 0 2rem;
 
-		h5 {
-			margin: 0 0 1.5rem;
+		&-header {
+			margin: 0 0 1rem;
+			display: flex;
+			align-items: center;
+			flex-direction: column;
+
+			i {
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				font-size: 2rem;
+				margin-bottom: 0.25rem;
+				background-color: fade-out($text, 0.95);
+				border-radius: 50%;
+				padding: 1.25rem;
+				height: 18px;
+				width: 18px;
+			}
 		}
 	}
 	&__form {
 		overflow: visible;
+		box-shadow: none;
 
 		.input {
 			width: 265px;
+			text-align: center;
 		}
 		.btn {
 			font-size: 1rem;
 			padding: 0 1rem;
+			font-weight: 700;
 		}
 	}
 }

@@ -25,15 +25,18 @@ export default {
 	z-index: 1;
 	left: 0;
 	top: 0;
+	bottom: 0;
 	width: 100%;
-	height: 100%;
-	overflow: auto;
 	background-color: rgb(0, 0, 0);
 	background-color: rgba(0, 0, 0, 0.4);
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
 }
 .dialog-content {
+	margin-top: -5%;
 	background-color: #fff;
-	margin: 35% auto;
 	overflow: visible;
 }
 </style>
