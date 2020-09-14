@@ -1,13 +1,7 @@
 import socket from '@/services/SocketService'
-import {
-	userState
-} from '@/composition/User'
-import {
-	gameState
-} from '@/composition/Game'
-import {
-	reactive
-} from 'vue'
+import { userState } from '@/composition/User'
+import { gameState } from '@/composition/Game'
+import { reactive } from 'vue'
 import router from '@/router'
 const LOG = true
 
@@ -18,6 +12,7 @@ export const roomState = reactive({
 	connected: false,
 	active: false,
 	ready: false,
+	gameOver: false,
 	room: {},
 	users: {},
 })
@@ -71,8 +66,6 @@ export function setUserColor(color) {
 	socket.emit('color', color)
 }
 
-
-
 // event handlers
 function onJoinRoom(room) {
 	log('join')
@@ -98,6 +91,7 @@ function onJoinRoomError() {
 
 function onGameStart() {
 	log('start')
+	roomState.gameOver = false
 	roomState.active = true
 	router.push(`/${roomState.roomid}/game`)
 }
@@ -105,7 +99,7 @@ function onGameStart() {
 function onGameOver() {
 	log('end')
 	roomState.active = false
-	router.push(`/${roomState.roomid}/results`)
+	roomState.gameOver = true
 }
 
 // events

@@ -1,49 +1,5 @@
-<template>
-	<ul class="users">
-		<li
-			class="users__user"
-			v-for="(user, i) in usersList"
-			:key="i"
-			:class="[user.color, `striped-${user.color}`, `ready-${user.ready}`]"
-		>
-			<!-- empty -->
-			<button
-				v-if="user.userid === 'empty'"
-				class="btn text users__user-empty"
-				:class="rooms ? 'rooms' : ''"
-				@click="$emit('share')"
-			>
-				<i :class="rooms ? 'ri-user-line' : 'ri-user-add-line'"></i>
-			</button>
-
-			<!-- username -->
-			<div class="flex" v-else>
-				<button
-					class="btn btn-color left"
-					v-if="userState.userid === user.userid && !roomState.ready"
-					@click="changeColor"
-				>
-					<i class="ri-arrow-left-s-line"></i>
-				</button>
-				<button
-					class="btn btn-color right"
-					v-if="userState.userid === user.userid && !roomState.ready"
-					@click="changeColor(true)"
-				>
-					<i class="ri-arrow-right-s-line"></i>
-				</button>
-
-				<div class="users__user-username">{{user.username}}</div>
-				<div class="users__user-ready" v-if="user.ready">
-					<i class="ri-check-line"></i>
-				</div>
-			</div>
-		</li>
-	</ul>
-</template>
-
 <script>
-import { ref, computed, watch } from 'vue'
+import { ref, watch } from 'vue'
 import { userState } from '@/composition/User'
 import { roomState } from '@/composition/Room'
 
@@ -115,6 +71,50 @@ export default {
 	},
 }
 </script>
+
+<template>
+	<ul class="users">
+		<li
+			class="users__user"
+			v-for="(user, i) in usersList"
+			:key="i"
+			:class="[user.color, `striped-${user.color}`, `ready-${user.ready}`]"
+		>
+			<!-- empty -->
+			<button
+				v-if="user.userid === 'empty'"
+				class="btn text users__user-empty"
+				:class="rooms ? 'rooms' : ''"
+				@click="$emit('share')"
+			>
+				<i :class="rooms ? 'ri-user-line' : 'ri-user-add-line'"></i>
+			</button>
+
+			<!-- username -->
+			<div class="flex" v-else>
+				<button
+					class="btn btn-color left"
+					v-if="userState.userid === user.userid && !roomState.ready"
+					@click="changeColor"
+				>
+					<i class="ri-arrow-left-s-line"></i>
+				</button>
+				<button
+					class="btn btn-color right"
+					v-if="userState.userid === user.userid && !roomState.ready"
+					@click="changeColor(true)"
+				>
+					<i class="ri-arrow-right-s-line"></i>
+				</button>
+
+				<div class="users__user-username">{{ user.username }}</div>
+				<div class="users__user-ready" v-if="user.ready">
+					<i class="ri-check-line"></i>
+				</div>
+			</div>
+		</li>
+	</ul>
+</template>
 
 <style lang="scss" scoped>
 @import '@/styles/variables.scss';

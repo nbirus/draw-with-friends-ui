@@ -20,7 +20,6 @@ export default {
 		})
 		let currentRoute = router.currentRoute.value
 		let roomid = currentRoute.params.id
-		let color = ref('')
 
 		onMounted(() => {
 			joinRoom(roomid)
@@ -72,7 +71,7 @@ export default {
 			<h1>{{ roomState.room.name }}</h1>
 		</div>
 		<div class="page__body">
-			<div class="page__card card" :class="{'ready': roomState.ready}">
+			<div class="page__card card" :class="{ 'ready': roomState.ready }">
 				<div class="page__card-left">
 					<!-- users -->
 					<div class="page__card-users">
@@ -81,7 +80,7 @@ export default {
 							v-if="roomState.connected"
 							:users="roomState.room.users"
 							@input="setColor"
-							@share="shareDialog=true"
+							@share="shareDialog = true"
 						></room-users>
 					</div>
 

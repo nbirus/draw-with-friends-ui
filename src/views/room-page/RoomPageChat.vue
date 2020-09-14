@@ -1,5 +1,5 @@
 <script>
-import { ref, watch, computed } from 'vue'
+import { computed } from 'vue'
 import { roomState } from '@/composition/Room'
 import { userState } from '@/composition/User'
 import { cloneDeep, get } from 'lodash'
@@ -24,12 +24,6 @@ export default {
 		}
 	},
 }
-
-function gotoBottom(element) {
-	if (element) {
-		element.scrollTop = element.scrollHeight - element.clientHeight
-	}
-}
 </script>
 
 <template>
@@ -45,7 +39,7 @@ function gotoBottom(element) {
 				<div
 					v-if="message.event"
 					class="chat__list-event"
-					:class="[message.event,  get(roomState, `room.users.${message.userid}.ready`) ? 'ready-active' : '']"
+					:class="[message.event, get(roomState, `room.users.${message.userid}.ready`) ? 'ready-active' : '']"
 				>
 					<i v-if="message.event === 'join'" class="ri-arrow-right-line"></i>
 					<i v-if="message.event === 'leave'" class="ri-close-line"></i>
@@ -58,7 +52,7 @@ function gotoBottom(element) {
 						<span v-else-if="message.event === 'leave'">left the room</span>
 						<span v-else-if="message.event === 'ready'">is ready...</span>
 						<span v-else-if="message.event === 'countdown-cancel'">isn't ready</span>
-						<span v-else-if="message.event === 'countdown'">Game starts in {{message.message}}...</span>
+						<span v-else-if="message.event === 'countdown'">Game starts in {{ message.message }}...</span>
 					</div>
 				</div>
 

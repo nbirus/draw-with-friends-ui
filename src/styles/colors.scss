@@ -1,0 +1,27 @@
+// colors
+@each $color, $name in $colors {
+	.striped-#{$name} {
+		background: repeating-linear-gradient(
+			45deg,
+			lighten($color, 0),
+			lighten($color, 0) 2rem,
+			darken($color, 3) 2rem,
+			darken($color, 3) 4rem
+		);
+		background-size: 200% 200%;
+		animation: barberpole 15s linear infinite;
+	}
+	.text-#{$name} {
+		color: $color;
+
+		&.text--dark {
+			color: darken($color, 15);
+		}
+	}
+}
+
+@keyframes barberpole {
+	100% {
+		background-position: 100% 100%;
+	}
+}
