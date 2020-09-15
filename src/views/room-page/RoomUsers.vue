@@ -164,9 +164,7 @@ export default {
 			right: 0.8rem;
 			width: 32px;
 			height: 32px;
-			background-color: $green;
-
-			font-size: 1.1rem;
+			font-size: 1.2rem;
 		}
 		&-empty {
 			height: 60px;
@@ -205,20 +203,13 @@ export default {
 			position: absolute;
 			right: 1rem;
 		}
-		&.ready-true {
-			box-shadow: inset 0 0 0 5px $green;
+		@each $color, $name in $colors {
+			&.#{$name}.ready-true {
+				box-shadow: inset 0 0 0 4px darken($color, 10);
 
-			&:after {
-				content: '';
-				position: absolute;
-				top: 0;
-				left: 0;
-				right: 0;
-				bottom: 0;
-			}
-
-			.users__user-ready {
-				background-color: $green;
+				.users__user-ready {
+					background-color: darken($color, 10);
+				}
 			}
 		}
 	}

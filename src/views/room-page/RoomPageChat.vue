@@ -51,7 +51,7 @@ export default {
 						<span v-if="message.event === 'join'">joined the room</span>
 						<span v-else-if="message.event === 'leave'">left the room</span>
 						<span v-else-if="message.event === 'ready'">is ready...</span>
-						<span v-else-if="message.event === 'countdown-cancel'">isn't ready</span>
+						<span v-else-if="message.event === 'countdown-cancel'">stopped the countdown</span>
 						<span v-else-if="message.event === 'countdown'">Game starts in {{ message.message }}...</span>
 					</div>
 				</div>
@@ -121,7 +121,7 @@ export default {
 		}
 		&-event {
 			flex: 0 0 auto;
-			padding: 0 1rem;
+			padding: 0 0.5rem;
 			margin: 0.75rem 0 0;
 			font-size: 1rem;
 			position: relative;
@@ -140,12 +140,11 @@ export default {
 				height: 18px;
 				width: 18px;
 			}
-			.message {
-				color: lighten($text, 35);
-			}
 
 			&.ready {
 				padding: 0.75rem 1rem;
+				margin: 0.5rem 0 0;
+
 				i {
 					height: 18px;
 					width: 18px;
@@ -155,8 +154,6 @@ export default {
 				}
 			}
 			&.leave {
-				opacity: 0.8;
-
 				i {
 					color: lighten($text, 35) !important;
 					background-color: fade-out($text, 0.95) !important;
@@ -175,13 +172,6 @@ export default {
 			&.countdown-cancel {
 				i {
 					display: none;
-				}
-				.username {
-					font-size: 0.8rem;
-				}
-				.message {
-					font-size: 0.8rem;
-					color: lighten($text, 40);
 				}
 			}
 		}
@@ -212,10 +202,6 @@ export default {
 			line-height: 1.2;
 		}
 	}
-}
-
-.message + .event {
-	margin-bottom: 0.35rem;
 }
 
 @keyframes barberpole {

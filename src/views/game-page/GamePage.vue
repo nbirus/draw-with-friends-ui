@@ -4,8 +4,7 @@ import GameToolbar from './GameToolbar'
 import GameOverlay from './GameOverlay'
 import GameBoard from './GameBoard'
 import GameTimer from './GameTimer'
-
-// import Board from '@/components/game/Board'
+import GameOverModal from './GameOverModal'
 
 import { gameState, sendGuess } from '@/composition/Game'
 import { roomState, joinRoom } from '@/composition/Room'
@@ -15,7 +14,7 @@ import router from '@/router'
 
 export default {
 	name: 'GamePage',
-	components: { GameHeader, GameToolbar, GameOverlay, GameBoard, GameTimer },
+	components: { GameHeader, GameToolbar, GameOverlay, GameBoard, GameTimer, GameOverModal },
 	setup() {
 		const guess = ref('')
 		function guessSubmit() {
@@ -58,7 +57,10 @@ export default {
 		</div>
 
 		<!-- overlay -->
+
 		<game-overlay class="game__overlay" v-if="gameState.event !== 'turn-start'" />
+		{{gameState.started}}
+		<!-- <game-over-modal class="game__over-modal" :open="!gameState.started" /> -->
 	</div>
 </template>
 

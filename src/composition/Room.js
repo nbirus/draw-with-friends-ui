@@ -1,7 +1,13 @@
 import socket from '@/services/SocketService'
-import { userState } from '@/composition/User'
-import { gameState } from '@/composition/Game'
-import { reactive } from 'vue'
+import {
+	userState
+} from '@/composition/User'
+import {
+	gameState
+} from '@/composition/Game'
+import {
+	reactive
+} from 'vue'
 import router from '@/router'
 const LOG = false
 
@@ -13,6 +19,7 @@ export const roomState = reactive({
 	active: false,
 	ready: false,
 	gameOver: false,
+	color: '',
 	room: {},
 	users: {},
 })
@@ -80,7 +87,7 @@ function onUpdateRoom(room) {
 	log('update', room.roomid)
 	roomState.room = room
 	roomState.users = room.users
-	gameState.color = room.users[userState.userid].color
+	roomState.color = room.users[userState.userid].color
 }
 
 function onJoinRoomError() {

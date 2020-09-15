@@ -18,7 +18,7 @@ export default {
 		watch(
 			() => props.users,
 			users => {
-				usersList.value = Object.values(users)
+				usersList.value = Object.values(users).filter(user => user.connected)
 				usersLength.value = Object.values(users).length
 				for (var i = 0; i < 4 - usersLength.value; i++) {
 					usersList.value.push({
@@ -52,7 +52,12 @@ export default {
 		</div>
 		<div class="room-card__body">
 			<ul class="room-card__users">
-				<li class="room-card__users-item" v-for="(user, i) in usersList" :key="i" :class="`striped-${user.color}`">
+				<li
+					class="room-card__users-item"
+					v-for="(user, i) in usersList"
+					:key="i"
+					:class="`striped-${user.color}`"
+				>
 					<div class="empty" v-if="user.userid === 'empty'">
 						<i class="ri-user-line"></i>
 					</div>

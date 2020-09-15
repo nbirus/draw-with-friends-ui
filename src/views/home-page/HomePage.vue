@@ -96,7 +96,7 @@ export default {
 
 		&-empty {
 			font-size: 1.5rem;
-			color: lighten($text, 40);
+			color: fade-out($text, 0.65);
 			margin-top: 2rem;
 			padding: 2rem 3rem;
 			border-radius: $border-radius;

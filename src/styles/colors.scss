@@ -1,16 +1,48 @@
 // colors
-@each $color, $name in $colors {
+@each $color,
+$name in $colors {
 	.striped-#{$name} {
-		background: repeating-linear-gradient(
-			45deg,
-			lighten($color, 0),
-			lighten($color, 0) 2rem,
-			darken($color, 3) 2rem,
-			darken($color, 3) 4rem
-		);
+		background: repeating-linear-gradient(45deg,
+				lighten($color, 0),
+				lighten($color, 0) 2rem,
+				darken($color, 3) 2rem,
+				darken($color, 3) 4rem);
 		background-size: 200% 200%;
 		animation: barberpole 15s linear infinite;
 	}
+
+	button.striped-#{$name} {
+		&:active {
+			background: repeating-linear-gradient(45deg,
+					darken($color, 3),
+					darken($color, 3) 2rem,
+					darken($color, 6) 2rem,
+					darken($color, 6) 4rem);
+			background-size: 200% 200%;
+			animation: barberpole 15s linear infinite;
+		}
+
+		&:focus {
+			background: repeating-linear-gradient(45deg,
+					darken($color, 3),
+					darken($color, 3) 2rem,
+					darken($color, 6) 2rem,
+					darken($color, 6) 4rem);
+			background-size: 200% 200%;
+			animation: barberpole 15s linear infinite;
+		}
+
+		&:hover {
+			background: repeating-linear-gradient(45deg,
+					darken($color, 3),
+					darken($color, 3) 2rem,
+					darken($color, 6) 2rem,
+					darken($color, 6) 4rem);
+			background-size: 200% 200%;
+			animation: barberpole 15s linear infinite;
+		}
+	}
+
 	.text-#{$name} {
 		color: $color;
 

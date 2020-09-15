@@ -1,7 +1,13 @@
 import socket from '@/services/SocketService'
-import { reactive } from 'vue'
-import { userState } from '@/composition/User'
-import { roomState } from '@/composition/Room'
+import {
+	reactive
+} from 'vue'
+import {
+	userState
+} from '@/composition/User'
+import {
+	roomState
+} from '@/composition/Room'
 const LOG = false
 
 export const gameState = reactive({

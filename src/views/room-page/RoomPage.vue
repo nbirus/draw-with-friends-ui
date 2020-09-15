@@ -16,6 +16,7 @@ export default {
 	setup() {
 		let shareInput = ref(null)
 		let shareDialog = ref(false)
+		let copied = ref(false)
 		let message = ref('')
 		let usersLength = computed(() => {
 			return Object.keys(get(roomState, 'room.users', {})).length
@@ -37,16 +38,22 @@ export default {
 		}
 
 		function copyLink() {
-			copy(`localhost:8080/${roomid}`)
+			copy(`drawguys.com/${roomid}`)
+			copied.value = true
+		}
+		function focusLink() {
+			shareInput.value.select()
 		}
 
 		watch(shareDialog, flag => {
 			if (flag) {
-				shareInput.value.select()
+				copied.value = false
+				focusLink()
 			}
 		})
 
 		return {
+			copied,
 			shareInput,
 			shareDialog,
 			roomState,
@@ -57,6 +64,7 @@ export default {
 			setColor,
 			usersLength,
 			copyLink,
+			focusLink,
 		}
 	},
 }
@@ -80,7 +88,7 @@ export default {
 			</div>
 		</div>
 	</div>
-	<div class="page room" v-else>
+	<div class="page room" :class="roomState.color" v-else>
 		<div class="page__header">
 			<h1>{{ roomState.room.name }}</h1>
 		</div>
@@ -102,11 +110,12 @@ export default {
 						<button
 							type="submit"
 							class="btn page__card-ready-btn btn-block"
-							:class="{ 'btn-green ready': roomState.ready, 'not-enough': usersLength === 1 }"
+							:class="[{ [`striped-${roomState.color} ready`]: roomState.ready, 'striped-light': !roomState.ready, 'not-enough': usersLength === 1 }]"
 							@click="setReady(!roomState.ready)"
 						>
 							<span></span>
-							<i class="ri-close-fill" v-if="!roomState.ready"></i>
+							<i class="ri-forbid-line" v-if="usersLength === 1"></i>
+							<i class="ri-close-fill" v-else-if="!roomState.ready"></i>
 							<i class="ri-check-fill" v-else></i>
 						</button>
 					</div>
@@ -133,7 +142,7 @@ export default {
 			</div>
 		</div>
 
-		<modal width="450" :open="shareDialog" @close="shareDialog = false">
+		<modal width="400" :open="shareDialog" @close="shareDialog = false">
 			<div class="page__share">
 				<div class="page__share-header">
 					<i class="ri-share-line mr-2"></i>
@@ -149,10 +158,12 @@ export default {
 							placeholder
 							type="text"
 							@input.prevent="() => {}"
-							:value="`localhost:8080${$route.fullPath}`"
+							@focus="focusLink"
+							:value="`drawguys.com${$route.fullPath}`"
 						/>
 					</div>
-					<button class="btn btn-primary btn-medium" type="submit">Copy</button>
+
+					<button class="btn btn-medium btn-primary" type="submit">Copy</button>
 				</form>
 			</div>
 		</modal>
@@ -165,6 +176,20 @@ export default {
 .page {
 	padding: 5rem 3rem;
 	opacity: 1;
+
+	@each $color, $name in $colors {
+		&.#{$name} {
+			.ready:after {
+				box-shadow: inset 0 0 0 4px $color;
+			}
+			.page__card-ready-btn.ready {
+				i {
+					background-color: darken($color, 5);
+					color: white;
+				}
+			}
+		}
+	}
 
 	&__loading {
 		position: fixed;
@@ -238,10 +263,6 @@ export default {
 			transition: box-shadow 0.2s ease;
 		}
 
-		&.ready:after {
-			box-shadow: inset 0 0 0 4px $green;
-		}
-
 		&-left {
 			flex: 0 0 50%;
 			display: flex;
@@ -305,23 +326,21 @@ export default {
 			}
 		}
 		&-ready {
-			padding: 1rem;
+			padding: 0.75rem 1rem;
 			border-top: solid thin $border-color-light;
 
 			&-btn {
 				border: solid thin $border-color-light;
-				height: 50px;
+				height: 55px;
 				position: relative;
 				border-radius: none;
 				font-weight: 700;
 
 				span:after {
 					content: 'Not ready';
-					color: lighten($text, 50);
+					color: lighten($text, 30);
 				}
 				&.ready {
-					border: solid thin darken($green, 10);
-
 					span:after {
 						content: 'Ready';
 						color: white;
@@ -334,14 +353,15 @@ export default {
 					span:after {
 						font-size: 0.9rem;
 						content: 'Waiting for one more player...';
+						color: lighten($text, 40);
 					}
 					i {
-						display: none;
+						font-weight: 400;
+						font-size: 1.2rem;
 					}
 				}
 				i {
 					position: absolute;
-					// background-color: darken($light, 5);
 					border: none;
 					height: 35px;
 					width: 35px;
@@ -354,37 +374,11 @@ export default {
 					font-size: 1.5rem;
 					color: darken($light, 30);
 				}
-				&.ready {
-					i {
-						background-color: darken($green, 5);
-						color: white;
-					}
-
-					background: repeating-linear-gradient(
-						45deg,
-						lighten($green, 0),
-						lighten($green, 0) 2rem,
-						darken($green, 2) 2rem,
-						darken($green, 2) 4rem
-					);
-					background-size: 200% 200%;
-					animation: barberpole 25s linear infinite;
-				}
 
 				&:active,
 				&:focus {
 					outline: none;
 				}
-
-				background: repeating-linear-gradient(
-					45deg,
-					lighten($light, 0),
-					lighten($light, 0) 2rem,
-					darken($light, 2) 2rem,
-					darken($light, 2) 4rem
-				);
-				background-size: 200% 200%;
-				animation: barberpole 25s linear infinite;
 			}
 		}
 	}
@@ -392,14 +386,18 @@ export default {
 		display: flex;
 		flex-direction: column;
 		align-items: center;
-		padding: 1.5rem 0 2rem;
+		padding: 1.5rem 0 0;
+		overflow: visible;
 
 		&-header {
-			margin: 0 0 1rem;
+			margin: 0 0 1.5rem;
 			display: flex;
 			align-items: center;
 			flex-direction: column;
 
+			h5 {
+				font-weight: 300;
+			}
 			i {
 				display: flex;
 				align-items: center;
@@ -415,17 +413,31 @@ export default {
 		}
 	}
 	&__form {
-		overflow: visible;
 		box-shadow: none;
+		border: none;
+		border-radius: 0 0 $border-radius $border-radius;
+		border-top: solid thin $border-color;
 
 		.input {
-			width: 265px;
+			width: 288px;
 			text-align: center;
+			font-weight: 200;
+			color: $blue;
+			text-decoration: underline;
+
+			&::selection {
+				color: white;
+				background: $blue;
+			}
 		}
 		.btn {
 			font-size: 1rem;
 			padding: 0 1rem;
 			font-weight: 700;
+
+			&:disabled {
+				pointer-events: none;
+			}
 		}
 	}
 }
