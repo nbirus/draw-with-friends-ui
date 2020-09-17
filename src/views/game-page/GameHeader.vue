@@ -1,9 +1,9 @@
 <template>
 	<div class="game-header">
 		<ul class="game-header__users">
-			<!-- <li
+			<li
 				class="game-header__user"
-				v-for="(user, userid) in roomState.room.users"
+				v-for="(user, userid) in roomState.users"
 				:key="userid"
 				:class="[{ match: user.match, turn: gameState.turnUser.userid === userid }, `striped-${user.color}`]"
 			>
@@ -12,14 +12,23 @@
 					<i class="ri-pencil-fill" v-if="gameState.turnUser.userid === userid"></i>
 					<span v-else v-text="user.score"></span>
 				</div>
-			</li>-->
+			</li>
 		</ul>
 	</div>
 </template>
 
 <script>
+import { roomState } from '@/composition/Room'
+import { gameState } from '@/composition/Game'
+
 export default {
 	name: 'game-header',
+	setup() {
+		return {
+			roomState,
+			gameState,
+		}
+	},
 }
 </script>
 

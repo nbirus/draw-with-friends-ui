@@ -104,10 +104,10 @@ export default {
 					.ready.ready-active {
 						background: repeating-linear-gradient(
 							45deg,
-							fade-out($color, 0.9),
-							fade-out($color, 0.9) 2rem,
-							fade-out($color, 0.95) 2rem,
-							fade-out($color, 0.95) 4rem
+							fade-out($color, 0.935),
+							fade-out($color, 0.935) 2rem,
+							fade-out($color, 0.975) 2rem,
+							fade-out($color, 0.975) 4rem
 						);
 						background-size: 200% 200%;
 						animation: barberpole 25s linear infinite;
@@ -122,7 +122,7 @@ export default {
 		&-event {
 			flex: 0 0 auto;
 			padding: 0 0.5rem;
-			margin: 0.75rem 0 0;
+			margin: 0 0 0.75rem;
 			font-size: 1rem;
 			position: relative;
 			display: flex;
@@ -142,7 +142,7 @@ export default {
 			}
 
 			&.ready {
-				padding: 0.75rem 1rem;
+				padding: 0.5rem;
 				margin: 0.5rem 0 0;
 
 				i {
@@ -153,23 +153,21 @@ export default {
 					color: fade-out($text, 0.25);
 				}
 			}
-			&.leave {
-				i {
-					color: lighten($text, 35) !important;
-					background-color: fade-out($text, 0.95) !important;
-				}
-			}
 			&.countdown {
+				padding: 0 1rem;
+
 				.username,
 				i {
 					display: none;
 				}
 				.message {
-					font-size: 0.8rem;
-					color: lighten($text, 40);
+					font-size: 0.85rem;
+					color: lighten($text, 20);
 				}
 			}
 			&.countdown-cancel {
+				padding: 0 1rem;
+
 				i {
 					display: none;
 				}
@@ -179,7 +177,7 @@ export default {
 			display: flex;
 			align-items: flex-start;
 			padding: 0 1rem;
-			margin: 0.5rem 0 0;
+			margin: 0 0 0.5rem;
 			font-size: 1rem;
 		}
 

@@ -8,6 +8,7 @@ import {
 import {
 	roomState
 } from '@/composition/Room'
+import get from 'lodash/get'
 const LOG = false
 
 export const gameState = reactive({
@@ -20,6 +21,7 @@ export const gameState = reactive({
 	turn: 1,
 	turnEnd: 2,
 	turnUser: {},
+	turnUserColor: '',
 	drawing: false,
 })
 
@@ -47,6 +49,7 @@ function onUpdateGame(data) {
 		}
 	})
 	gameState.drawing = userState.userid === gameState.turnUser.userid && data.event === 'turn-start'
+	gameState.turnUserColor = get(roomState, `users.${gameState.turnUser.userid}.color`)
 }
 
 // events

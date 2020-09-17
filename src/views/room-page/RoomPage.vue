@@ -3,7 +3,7 @@ import Chat from '@/views/room-page/RoomPageChat'
 import RoomUsers from '@/views/room-page/RoomUsers'
 import Modal from '@/components/Modal'
 
-import { joinRoom, roomMessage, setReady, roomState, setUserColor } from '@/composition/Room'
+import { joinRoom, roomMessage, setReady, setTyping, roomState, setUserColor } from '@/composition/Room'
 import { gameState } from '@/composition/Game'
 import { computed, onMounted, ref, watch } from 'vue'
 import get from 'lodash/get'
@@ -65,6 +65,7 @@ export default {
 			usersLength,
 			copyLink,
 			focusLink,
+			setTyping,
 		}
 	},
 }
@@ -114,9 +115,11 @@ export default {
 							@click="setReady(!roomState.ready)"
 						>
 							<span></span>
-							<i class="ri-forbid-line" v-if="usersLength === 1"></i>
-							<i class="ri-close-fill" v-else-if="!roomState.ready"></i>
-							<i class="ri-check-fill" v-else></i>
+							<div class="icon">
+								<i class="ri-forbid-line" v-if="usersLength === 1"></i>
+								<i class="ri-close-fill" v-else-if="!roomState.ready"></i>
+								<i class="ri-check-fill" v-else></i>
+							</div>
 						</button>
 					</div>
 				</div>
@@ -133,6 +136,10 @@ export default {
 									maxlength="60"
 									autocomplete="off"
 									v-model="message"
+									@keydown="setTyping(true)"
+									@keypress.enter="setTyping(false)"
+									@keypress.delete="setTyping(false)"
+									@blur="setTyping(false)"
 								/>
 								<i class="ri-send-plane-fill"></i>
 							</form>
@@ -180,11 +187,12 @@ export default {
 	@each $color, $name in $colors {
 		&.#{$name} {
 			.ready:after {
-				box-shadow: inset 0 0 0 4px $color;
+				box-shadow: inset 0 0 0 3px $color;
 			}
 			.page__card-ready-btn.ready {
-				i {
-					background-color: darken($color, 5);
+				box-shadow: inset 0 0 0 3px darken($color, 15);
+				.icon {
+					background-color: darken($color, 15);
 					color: white;
 				}
 			}
@@ -309,7 +317,7 @@ export default {
 					position: absolute;
 					top: 1rem;
 					right: 1rem;
-					color: $text;
+					color: $text-light;
 				}
 			}
 			&-input {
@@ -323,6 +331,10 @@ export default {
 				outline: none !important;
 				border-radius: 0px;
 				padding-right: 4rem;
+
+				&:focus {
+					background-color: lighten($light, 2);
+				}
 			}
 		}
 		&-ready {
@@ -341,6 +353,9 @@ export default {
 					color: lighten($text, 30);
 				}
 				&.ready {
+					.icon {
+						opacity: 1;
+					}
 					span:after {
 						content: 'Ready';
 						color: white;
@@ -360,19 +375,24 @@ export default {
 						font-size: 1.2rem;
 					}
 				}
-				i {
+				.icon {
+					font-weight: 100;
 					position: absolute;
 					border: none;
-					height: 35px;
-					width: 35px;
-					border-radius: 50%;
-					top: 0.5rem;
-					right: 0.5rem;
-					display: flex;
-					align-items: center;
-					justify-content: center;
-					font-size: 1.5rem;
-					color: darken($light, 30);
+					top: 0rem;
+					left: 0rem;
+					width: 3rem;
+					height: 3rem;
+					border-radius: $border-radius 0 0 0;
+					font-size: 1.2rem;
+					clip-path: polygon(0 0, 0 85%, 100% 0);
+					opacity: 0;
+
+					i {
+						position: absolute;
+						top: 0.25rem;
+						left: 0.35rem;
+					}
 				}
 
 				&:active,

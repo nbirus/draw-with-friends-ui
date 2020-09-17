@@ -16,12 +16,6 @@ export default {
 	name: 'GamePage',
 	components: { GameHeader, GameToolbar, GameOverlay, GameBoard, GameTimer, GameOverModal },
 	setup() {
-		const guess = ref('')
-		function guessSubmit() {
-			sendGuess(guess.value)
-			guess.value = ''
-		}
-
 		let currentRoute = router.currentRoute.value
 		let roomid = currentRoute.params.id
 		onMounted(() => {
@@ -29,9 +23,6 @@ export default {
 		})
 
 		return {
-			guess,
-			guessSubmit,
-			sendGuess,
 			gameState,
 			roomState,
 			userState,
@@ -45,12 +36,20 @@ export default {
 		<!-- header -->
 		<game-header class="game__header" />
 
+		<div class="game__event" :class="gameState.turnUserColor">
+			<div v-if="gameState.turnUser.username">
+				<b>{{gameState.turnUser.username}}</b> is drawing...
+			</div>
+		</div>
+
 		<!-- timer -->
-		<game-timer class="game__timer" />
+		<div class="game__timer">
+			<!-- <game-timer /> -->
+		</div>
 
 		<div class="game__main">
 			<!-- board -->
-			<game-board class="game__board" />
+			<game-board class="game__board card" />
 
 			<!-- toolbar -->
 			<game-toolbar class="game__toolbar" />
@@ -59,7 +58,6 @@ export default {
 		<!-- overlay -->
 
 		<game-overlay class="game__overlay" v-if="gameState.event !== 'turn-start'" />
-		{{gameState.started}}
 		<!-- <game-over-modal class="game__over-modal" :open="!gameState.started" /> -->
 	</div>
 </template>
@@ -79,13 +77,43 @@ export default {
 		bottom: 0;
 	}
 	&__header {
-		padding: 2rem;
+		padding: 1rem 0;
 		display: flex;
 		align-items: center;
 		flex-direction: column;
+		background-color: #fff;
+		z-index: 2;
+	}
+	&__event {
+		z-index: 1;
+		font-size: 0.9rem;
+		height: 36px;
+		background-color: $light;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		font-weight: 400;
+
+		b {
+			margin-right: 0.2rem;
+			font-weight: 700;
+		}
+
+		@each $color, $name in $colors {
+			&.#{$name} {
+				background-color: lighten($color, 35);
+				color: darken($color, 35);
+			}
+		}
+	}
+	&__timer {
+		height: 50px;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-items: center;
 	}
 	&__main {
-		padding: 1rem;
 		display: flex;
 		align-items: center;
 		justify-content: center;
@@ -110,7 +138,7 @@ export default {
 		right: 0;
 		bottom: 0;
 		left: 0;
-		background-color: fade-out(white, 0.25);
+		// background-color: fade-out(white, 0.25);
 		display: flex;
 		align-items: center;
 		justify-content: center;

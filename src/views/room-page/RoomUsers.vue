@@ -108,6 +108,12 @@ export default {
 				</button>
 
 				<div class="users__user-username">{{ user.username }}</div>
+				<!-- <div class="users__user-typing" v-if="userState.userid !== user.userid &&  user.typing"> -->
+				<div class="users__user-typing" v-if="userState.userid !== user.userid &&  user.typing">
+					<div class="dot"></div>
+					<div class="dot"></div>
+					<div class="dot"></div>
+				</div>
 				<div class="users__user-ready" v-if="user.ready">
 					<i class="ri-check-line"></i>
 				</div>
@@ -158,13 +164,46 @@ export default {
 			display: flex;
 			align-items: center;
 			justify-content: center;
-			border-radius: 50%;
 			position: absolute;
-			top: 0.8rem;
-			right: 0.8rem;
-			width: 32px;
-			height: 32px;
+			top: 0rem;
+			left: 0rem;
+			width: 3rem;
+			height: 3rem;
+			border-radius: $border-radius 0 0 0;
 			font-size: 1.2rem;
+			clip-path: polygon(0 0, 0 85%, 100% 0);
+
+			i {
+				position: absolute;
+				font-size: 1.2rem;
+				top: 0.35rem;
+				left: 0.35rem;
+			}
+		}
+		&-typing {
+			position: absolute;
+			background-color: fade-out(#fff, 0.85);
+			padding: 0.5rem 0.5rem;
+			border-radius: 25px;
+			right: 1rem;
+			display: grid;
+			grid-template-columns: 1fr 1fr 1fr;
+			grid-gap: 0.15rem;
+
+			.dot {
+				width: 6px;
+				height: 6px;
+				background-color: fade-out(#fff, 0.15);
+				border-radius: 50%;
+				animation: dot 1.5s ease-in-out infinite;
+
+				&:nth-child(2) {
+					animation-delay: 0.5s;
+				}
+				&:nth-child(3) {
+					animation-delay: 1s;
+				}
+			}
 		}
 		&-empty {
 			height: 60px;
@@ -205,10 +244,10 @@ export default {
 		}
 		@each $color, $name in $colors {
 			&.#{$name}.ready-true {
-				box-shadow: inset 0 0 0 4px darken($color, 10);
+				box-shadow: inset 0 0 0 4px darken($color, 15);
 
 				.users__user-ready {
-					background-color: darken($color, 10);
+					background-color: darken($color, 15);
 				}
 			}
 		}
@@ -244,6 +283,18 @@ export default {
 	}
 	&.right {
 		right: 0.25rem;
+	}
+}
+
+@keyframes dot {
+	0% {
+		opacity: 0.5;
+	}
+	50% {
+		opacity: 1;
+	}
+	100% {
+		opacity: 0.5;
 	}
 }
 </style>

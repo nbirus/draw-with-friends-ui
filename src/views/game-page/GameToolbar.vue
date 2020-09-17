@@ -1,6 +1,6 @@
 <template>
 	<div class="game-toolbar card">
-		<!-- <form
+		<form
 			class="game__toolbar-form card-form"
 			@submit.prevent="guessSubmit"
 			v-if="!gameState.drawing"
@@ -15,13 +15,29 @@
 		</form>
 		<div class="game__toolbar-drawkit" v-else>
 			<span>{{gameState.word}}</span>
-		</div>-->
+		</div>
 	</div>
 </template>
 
 <script>
+import { gameState, sendGuess } from '@/composition/Game'
+import { ref } from 'vue'
+
 export default {
 	name: 'game-toolbar',
+	setup() {
+		const guess = ref('')
+		function guessSubmit() {
+			sendGuess(guess.value)
+			guess.value = ''
+		}
+
+		return {
+			guess,
+			guessSubmit,
+			gameState,
+		}
+	},
 }
 </script>
 

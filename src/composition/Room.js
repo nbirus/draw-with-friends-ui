@@ -68,6 +68,10 @@ export function setReady(flag) {
 	socket.emit('ready', flag)
 }
 
+export function setTyping(flag) {
+	socket.emit('typing', flag)
+}
+
 export function setUserColor(color) {
 	log('set-color')
 	socket.emit('color', color)
