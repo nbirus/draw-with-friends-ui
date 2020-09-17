@@ -277,6 +277,9 @@ export default {
 	&:focus {
 		outline: none;
 	}
+	&:active {
+		transform: translateY(0);
+	}
 
 	&.left {
 		left: 0.25rem;

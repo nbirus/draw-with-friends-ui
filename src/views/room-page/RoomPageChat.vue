@@ -27,7 +27,7 @@ export default {
 </script>
 
 <template>
-	<div class="chat">
+	<div class="chat scroller">
 		<ul class="chat__list scroller">
 			<li
 				class="chat__list-item"
@@ -71,7 +71,7 @@ export default {
 
 .chat {
 	overflow-y: auto;
-	height: 400px;
+	// height: 400px;
 
 	&__list {
 		height: 100%;
@@ -83,11 +83,10 @@ export default {
 		overflow-y: auto;
 
 		&-item {
-			width: 337px;
 			flex: 0 0 auto;
 
-			&:first-child {
-				margin-bottom: 1rem;
+			&:last-child {
+				padding-top: 1rem !important;
 			}
 			&.empty {
 				opacity: 0.5;
@@ -143,7 +142,7 @@ export default {
 
 			&.ready {
 				padding: 0.5rem;
-				margin: 0.5rem 0 0;
+				margin: 0 0 0.75rem;
 
 				i {
 					height: 18px;

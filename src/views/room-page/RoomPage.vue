@@ -174,6 +174,14 @@ export default {
 				</form>
 			</div>
 		</modal>
+
+		<modal width="250" :open="roomState.countDown">
+			<div class="page__countdown">
+				<h5 class="mb-2">Game starts in...</h5>
+				<h1 class="mb-4">{{ roomState.countDownTimer }}</h1>
+				<button class="btn btn-grey btn-block" @click="setReady(false)">Stop</button>
+			</div>
+		</modal>
 	</div>
 </template>
 
@@ -459,6 +467,12 @@ export default {
 				pointer-events: none;
 			}
 		}
+	}
+	&__countdown {
+		padding: 2rem;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
 	}
 }
 

@@ -1,14 +1,8 @@
 import socket from '@/services/SocketService'
-import {
-	userState
-} from '@/composition/User'
-import {
-	gameState
-} from '@/composition/Game'
-import {
-	reactive
-} from 'vue'
+import { userState } from '@/composition/User'
+import { reactive } from 'vue'
 import router from '@/router'
+import get from 'lodash/get'
 const LOG = false
 
 export const roomState = reactive({
@@ -19,6 +13,8 @@ export const roomState = reactive({
 	active: false,
 	ready: false,
 	gameOver: false,
+	countDown: false,
+	countDownTimer: 0,
 	color: '',
 	room: {},
 	users: {},
@@ -92,6 +88,11 @@ function onUpdateRoom(room) {
 	roomState.room = room
 	roomState.users = room.users
 	roomState.color = room.users[userState.userid].color
+	let lastMessage = get(room, `messages.${room.messages.length - 1}`)
+	if (lastMessage && ['countdown', 'countdown-cancel'].includes(lastMessage.event)) {
+		roomState.countDown = lastMessage.event === 'countdown'
+		roomState.countDownTimer = lastMessage.message
+	}
 }
 
 function onJoinRoomError() {
