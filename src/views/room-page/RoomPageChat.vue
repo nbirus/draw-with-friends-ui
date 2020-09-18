@@ -81,12 +81,16 @@ export default {
 		flex-direction: column-reverse;
 		justify-content: flex-start;
 		overflow-y: auto;
+		font-size: 0.85rem;
 
 		&-item {
 			flex: 0 0 auto;
 
 			&:last-child {
 				padding-top: 1rem !important;
+			}
+			&:first-child {
+				margin-bottom: 0.25rem;
 			}
 			&.empty {
 				opacity: 0.5;
@@ -120,18 +124,17 @@ export default {
 		}
 		&-event {
 			flex: 0 0 auto;
-			padding: 0 0.5rem;
 			margin: 0 0 0.75rem;
-			font-size: 1rem;
+			padding: 0 0.5rem;
 			position: relative;
 			display: flex;
 			align-items: center;
 
 			i {
+				font-size: 1em;
 				display: flex;
 				align-items: center;
 				justify-content: center;
-				font-size: 1rem;
 				margin-right: 0.5rem;
 				background-color: fade-out($text, 0.95);
 				border-radius: 50%;
@@ -140,6 +143,9 @@ export default {
 				width: 18px;
 			}
 
+			&.join {
+				margin-top: 0.25rem;
+			}
 			&.ready {
 				padding: 0.5rem;
 				margin: 0 0 0.75rem;
@@ -153,44 +159,43 @@ export default {
 				}
 			}
 			&.countdown {
-				padding: 0 1rem;
+				padding: 0 0.5rem;
 
 				.username,
 				i {
 					display: none;
 				}
 				.message {
-					font-size: 0.85rem;
+					font-size: 0.9em;
 					color: lighten($text, 20);
 				}
 			}
 			&.countdown-cancel {
-				padding: 0 1rem;
+				padding: 0 0.5rem;
 
 				i {
 					display: none;
+				}
+				.message {
+					transform: translateY(1px);
 				}
 			}
 		}
 		&-message {
 			display: flex;
 			align-items: flex-start;
-			padding: 0 1rem;
 			margin: 0 0 0.5rem;
-			font-size: 1rem;
+			padding: 0 1rem 0 1rem;
 		}
 
 		.username {
 			flex: 0 0 auto;
-			font-size: 0.9em;
 			color: $text;
 			font-weight: 900;
 			display: inline;
 			margin-right: 0.35em;
 		}
 		.message {
-			font-size: 0.9em;
-			padding-bottom: 0.1rem;
 			display: inline;
 			color: lighten($text, 15);
 			white-space: wrap;

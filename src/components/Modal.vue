@@ -1,6 +1,6 @@
 <template>
 	<div class="dialog" v-if="open" @click.self="$emit('close')">
-		<div class="dialog-content card" :style="`width: ${width}px`">
+		<div class="dialog-content" :style="`width: ${width}px`">
 			<slot />
 		</div>
 	</div>
@@ -19,7 +19,7 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss">
 .dialog {
 	position: fixed;
 	z-index: 1;
@@ -27,8 +27,8 @@ export default {
 	top: 0;
 	bottom: 0;
 	width: 100%;
-	background-color: rgb(0, 0, 0);
-	background-color: rgba(0, 0, 0, 0.4);
+	background-color: fade-out(white, 0.05);
+	animation: fade 0.2s ease;
 
 	display: flex;
 	align-items: center;
@@ -36,7 +36,15 @@ export default {
 }
 .dialog-content {
 	margin-top: -5%;
-	background-color: #fff;
 	overflow: visible;
+}
+
+@keyframes fade {
+	0% {
+		opacity: 0;
+	}
+	100% {
+		opacity: 1;
+	}
 }
 </style>

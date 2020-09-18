@@ -270,6 +270,7 @@ export default {
 	align-items: center;
 	justify-content: center;
 	z-index: 1;
+	box-shadow: none;
 
 	&:hover {
 		background-color: fade-out(black, 0.9);

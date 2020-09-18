@@ -141,7 +141,7 @@ export default {
 									@keypress.delete="setTyping(false)"
 									@blur="setTyping(false)"
 								/>
-								<i class="ri-send-plane-fill"></i>
+								<i :class="`text-${roomState.color} text--light`" class="ri-send-plane-fill"></i>
 							</form>
 						</div>
 					</div>
@@ -179,7 +179,7 @@ export default {
 			<div class="page__countdown">
 				<h5 class="mb-2">Game starts in...</h5>
 				<h1 class="mb-4">{{ roomState.countDownTimer }}</h1>
-				<button class="btn btn-grey btn-block" @click="setReady(false)">Stop</button>
+				<button class="btn striped-light" @click="setReady(false)">Stop</button>
 			</div>
 		</modal>
 	</div>
@@ -195,7 +195,11 @@ export default {
 	@each $color, $name in $colors {
 		&.#{$name} {
 			.ready:after {
-				box-shadow: inset 0 0 0 2px $color;
+				box-shadow: inset 0 0 1px 1px $color;
+			}
+			.ready .page__card-chat {
+				// border-left: solid thin $color;
+				pointer-events: none;
 			}
 			.page__card-ready-btn.ready {
 				box-shadow: inset 0 0 0 3px darken($color, 15);
@@ -325,7 +329,6 @@ export default {
 					position: absolute;
 					top: 1rem;
 					right: 1rem;
-					color: $text-light;
 				}
 			}
 			&-input {
@@ -473,6 +476,10 @@ export default {
 		display: flex;
 		flex-direction: column;
 		align-items: center;
+
+		h1 {
+			font-size: 5rem;
+		}
 	}
 }
 
