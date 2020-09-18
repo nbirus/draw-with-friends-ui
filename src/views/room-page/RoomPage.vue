@@ -195,7 +195,7 @@ export default {
 	@each $color, $name in $colors {
 		&.#{$name} {
 			.ready:after {
-				box-shadow: inset 0 0 0 3px $color;
+				box-shadow: inset 0 0 0 2px $color;
 			}
 			.page__card-ready-btn.ready {
 				box-shadow: inset 0 0 0 3px darken($color, 15);

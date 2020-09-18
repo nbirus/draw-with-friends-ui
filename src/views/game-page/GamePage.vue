@@ -36,15 +36,24 @@ export default {
 		<!-- header -->
 		<game-header class="game__header" />
 
-		<div class="game__event" :class="gameState.turnUserColor">
-			<div v-if="gameState.turnUser.username">
-				<b>{{gameState.turnUser.username}}</b> is drawing...
+		<div class="game__event" :class="`${gameState.turnUserColor} striped-${gameState.turnUserColor}`">
+			<div
+				v-if="gameState.event === 'round-start'"
+			>Round {{gameState.round}}/{{gameState.roundEnd}} starting</div>
+			<div v-if="gameState.event === 'round-end'">Round over</div>
+			<div v-if="gameState.event === 'turn-pre'">
+				<div
+					v-if="gameState.turnUser.userid !== userState.userid"
+				>{{gameState.turnUser.username}} is about to draw</div>
+				<div v-else>You are about to draw, your word is: {{gameState.word}}</div>
 			</div>
+			<div v-if="gameState.event === 'turn-start'">{{gameState.turnUser.username}} is drawing</div>
+			<div v-if="gameState.event === 'turn-end'">{{gameState.turnUser.username}}s turn is over</div>
 		</div>
 
 		<!-- timer -->
 		<div class="game__timer">
-			<!-- <game-timer /> -->
+			<game-timer />
 		</div>
 
 		<div class="game__main">
@@ -89,6 +98,7 @@ export default {
 		font-size: 0.9rem;
 		height: 36px;
 		background-color: $light;
+		color: white;
 		display: flex;
 		align-items: center;
 		justify-content: center;
@@ -101,8 +111,7 @@ export default {
 
 		@each $color, $name in $colors {
 			&.#{$name} {
-				background-color: lighten($color, 35);
-				color: darken($color, 35);
+				// color: darken($color, 35);
 			}
 		}
 	}

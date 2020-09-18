@@ -1,5 +1,5 @@
 <template>
-	<div class="game-toolbar card">
+	<div class="game-toolbar card" v-if="['turn-start'].includes(gameState.event)">
 		<form
 			class="game__toolbar-form card-form"
 			@submit.prevent="guessSubmit"
@@ -11,7 +11,7 @@
 				type="text"
 				v-model="guess"
 			/>
-			<button class="btn btn-primary btn-medium">Send</button>
+			<button class="btn btn-medium" :class="`-${roomState.color}`">Send</button>
 		</form>
 		<div class="game__toolbar-drawkit" v-else>
 			<span>{{gameState.word}}</span>
@@ -20,6 +20,7 @@
 </template>
 
 <script>
+import { roomState } from '@/composition/Room'
 import { gameState, sendGuess } from '@/composition/Game'
 import { ref } from 'vue'
 
@@ -36,6 +37,7 @@ export default {
 			guess,
 			guessSubmit,
 			gameState,
+			roomState,
 		}
 	},
 }
@@ -51,6 +53,9 @@ export default {
 		.input {
 			flex: 0 1 100%;
 			border: none;
+		}
+		.btn {
+			color: white !important;
 		}
 	}
 	&-drawkit {
