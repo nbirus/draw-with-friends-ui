@@ -42,7 +42,7 @@ export default {
 			copied.value = true
 		}
 		function focusLink() {
-			shareInput.value.select()
+			// shareInput.value.select()
 		}
 
 		watch(shareDialog, flag => {
@@ -80,73 +80,79 @@ export default {
 	</div>
 	<div class="page__loading error" v-else-if="roomState.error">
 		<div class="page__loading-content">
-			<h3>This room no longer exists, create or join another</h3>
-			<div>
-				<router-link to="/">
-					<i class="ri-arrow-left-fill"></i>
-					Return home
-				</router-link>
-			</div>
+			<i class="ri-cloud-off-line"></i>
+			<h3>
+				This room no longer exists,
+				<router-link to="/">go back</router-link>to create or join another
+			</h3>
 		</div>
 	</div>
 	<div class="page room" :class="roomState.color" v-else>
-		<div class="page__header">
-			<h1>{{ roomState.room.name }}</h1>
-		</div>
+		<!-- change name -->
+		<router-link to="/" class="page__go-back-link">
+			<span>Leave room</span>
+		</router-link>
+		<transition appear name="page">
+			<div class="page__header">
+				<h1>{{ roomState.room.name }}</h1>
+			</div>
+		</transition>
 		<div class="page__body">
-			<div class="page__card card" :class="{ ready: roomState.ready }">
-				<div class="page__card-left">
-					<!-- users -->
-					<div class="page__card-users">
-						<room-users
-							v-if="roomState.connected"
-							:users="roomState.room.users"
-							@input="setColor"
-							@share="shareDialog = true"
-						></room-users>
-					</div>
+			<transition appear name="page">
+				<div class="page__card card delay-1" :class="{ ready: roomState.ready }">
+					<div class="page__card-left">
+						<!-- users -->
+						<div class="page__card-users">
+							<room-users
+								v-if="roomState.connected"
+								:users="roomState.room.users"
+								@input="setColor"
+								@share="shareDialog = true"
+							></room-users>
+						</div>
 
-					<!-- ready -->
-					<div class="page__card-ready">
-						<button
-							type="submit"
-							class="btn page__card-ready-btn btn-block"
-							:class="[{ [`striped-${roomState.color} ready`]: roomState.ready, 'striped-light': !roomState.ready, 'not-enough': usersLength === 1 }]"
-							@click="setReady(!roomState.ready)"
-						>
-							<span></span>
-							<div class="icon">
-								<i class="ri-forbid-line" v-if="usersLength === 1"></i>
-								<i class="ri-close-fill" v-else-if="!roomState.ready"></i>
-								<i class="ri-check-fill" v-else></i>
-							</div>
-						</button>
+						<!-- ready -->
+						<div class="page__card-ready">
+							<button
+								type="submit"
+								class="btn page__card-ready-btn btn-block"
+								:class="[{ [`striped-${roomState.color} ready`]: roomState.ready, 'striped-light': !roomState.ready, 'not-enough': usersLength === 1 }]"
+								@click="setReady(!roomState.ready)"
+							>
+								<span></span>
+								<div class="icon">
+									<i class="ri-forbid-line" v-if="usersLength === 1"></i>
+									<i class="ri-close-fill" v-else-if="!roomState.ready"></i>
+									<i class="ri-check-fill" v-else></i>
+								</div>
+							</button>
+						</div>
 					</div>
-				</div>
-				<div class="page__card-right">
-					<!-- chat -->
-					<div class="page__card-chat">
-						<chat class="chat" :messages="roomState.room.messages" />
-						<div class="page__card-chat-footer">
-							<form @submit.prevent="sendRoomMessage">
-								<input
-									placeholder="Send a message..."
-									class="input page__card-chat-input"
-									type="text"
-									maxlength="60"
-									autocomplete="off"
-									v-model="message"
-									@keydown="setTyping(true)"
-									@keypress.enter="setTyping(false)"
-									@keypress.delete="setTyping(false)"
-									@blur="setTyping(false)"
-								/>
-								<i :class="`text-${roomState.color} text--light`" class="ri-send-plane-fill"></i>
-							</form>
+					<div class="page__card-right">
+						<!-- chat -->
+						<div class="page__card-chat">
+							<chat class="chat" :messages="roomState.room.messages" />
+							<div class="page__card-chat-footer">
+								<form @submit.prevent="sendRoomMessage">
+									<input
+										placeholder="Send a message..."
+										class="input page__card-chat-input"
+										type="text"
+										maxlength="60"
+										autocomplete="off"
+										v-model="message"
+										@keydown="setTyping(true)"
+										@keypress.enter="setTyping(false)"
+										@keypress.delete="setTyping(false)"
+										@blur="setTyping(false)"
+									/>
+									<i class="ri-send-plane-fill"></i>
+								</form>
+							</div>
 						</div>
 					</div>
 				</div>
-			</div>
+			</transition>
 		</div>
 
 		<modal width="400" :open="shareDialog" @close="shareDialog = false">
@@ -189,17 +195,21 @@ export default {
 @import '@/styles/variables.scss';
 
 .page {
-	padding: 5rem 3rem;
+	padding: 0 3rem;
 	opacity: 1;
 
 	@each $color, $name in $colors {
 		&.#{$name} {
 			.ready:after {
-				box-shadow: inset 0 0 1px 1px $color;
+				// box-shadow: inset 0 0 1px 1px $color;
 			}
 			.ready .page__card-chat {
 				// border-left: solid thin $color;
 				pointer-events: none;
+
+				input {
+					opacity: 0.5;
+				}
 			}
 			.page__card-ready-btn.ready {
 				box-shadow: inset 0 0 0 3px darken($color, 15);
@@ -226,20 +236,21 @@ export default {
 		&.error {
 			background-color: fade-out(white, 0.2);
 
-			a {
-				border: solid thin $border-color;
-				padding: 1rem 2rem;
-				margin-top: 1rem;
-				border-radius: $border-radius;
-				color: $text;
-				text-decoration: none;
-
+			i {
 				display: flex;
 				align-items: center;
-
-				i {
-					margin-right: 0.5rem;
-				}
+				justify-content: center;
+				width: 5rem;
+				height: 5rem;
+				font-size: 2rem;
+				background-color: fade-out(black, 0.95);
+				border-radius: 50%;
+				margin-bottom: 1rem;
+			}
+			a {
+				color: black;
+				text-decoration: underline;
+				margin-right: 0.5ch;
 			}
 		}
 
@@ -253,8 +264,16 @@ export default {
 			}
 		}
 	}
+	&__go-back-link {
+		position: fixed;
+		bottom: 1rem;
+		left: 1rem;
+		color: $text;
+		text-decoration: underline;
+	}
 	&__header {
 		margin-bottom: 3rem;
+		padding: 5rem 0 0;
 		text-align: center;
 	}
 	&__body {
@@ -272,7 +291,6 @@ export default {
 
 		&:after {
 			content: '';
-			box-shadow: inset 0 0 0 0 $green;
 			border-radius: $border-radius;
 			position: absolute;
 			top: 0;
@@ -401,7 +419,7 @@ export default {
 
 					i {
 						position: absolute;
-						top: 0.25rem;
+						top: 0.2rem;
 						left: 0.35rem;
 					}
 				}

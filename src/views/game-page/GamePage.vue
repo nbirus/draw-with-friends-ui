@@ -47,7 +47,12 @@ export default {
 				>{{gameState.turnUser.username}} is about to draw</div>
 				<div v-else>You are about to draw, your word is: {{gameState.word}}</div>
 			</div>
-			<div v-if="gameState.event === 'turn-start'">{{gameState.turnUser.username}} is drawing</div>
+			<div v-if="gameState.event === 'turn-start'">
+				<div
+					v-if="gameState.turnUser.userid !== userState.userid"
+				>{{gameState.turnUser.username}} is drawing</div>
+				<div v-else>You are drawing</div>
+			</div>
 			<div v-if="gameState.event === 'turn-end'">{{gameState.turnUser.username}}s turn is over</div>
 		</div>
 

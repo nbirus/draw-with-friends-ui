@@ -9,7 +9,7 @@ export default {
 		users: Object,
 		rooms: Boolean,
 	},
-	setup(props) {
+	setup(props, { emit }) {
 		const usersList = ref([])
 
 		watch(
@@ -58,7 +58,7 @@ export default {
 				}
 			}
 
-			this.$emit('input', colors[newColorIndex])
+			emit('input', colors[newColorIndex])
 		}
 
 		function colorTaken(colorIndex) {
@@ -108,7 +108,6 @@ export default {
 				</button>
 
 				<div class="users__user-username">{{ user.username }}</div>
-				<!-- <div class="users__user-typing" v-if="userState.userid !== user.userid &&  user.typing"> -->
 				<div class="users__user-typing" v-if="userState.userid !== user.userid &&  user.typing">
 					<div class="dot"></div>
 					<div class="dot"></div>
@@ -176,7 +175,7 @@ export default {
 			i {
 				position: absolute;
 				font-size: 1.2rem;
-				top: 0.35rem;
+				top: 0.25rem;
 				left: 0.35rem;
 			}
 		}
@@ -274,12 +273,15 @@ export default {
 
 	&:hover {
 		background-color: fade-out(black, 0.9);
+		transform: translateY(0);
 	}
 	&:focus {
 		outline: none;
+		transform: translateY(0);
 	}
 	&:active {
 		transform: translateY(0);
+		background-color: fade-out(black, 0.8);
 	}
 
 	&.left {

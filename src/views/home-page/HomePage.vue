@@ -6,36 +6,41 @@
 		</router-link>
 
 		<!-- header -->
-		<div class="page__header">
-			<h1>Create or join a room</h1>
-		</div>
+		<transition appear name="page">
+			<div class="page__header">
+				<h1>Create or join a room</h1>
+			</div>
+		</transition>
 
 		<!-- card form -->
-		<form class="page__form card card-form" @submit.prevent="createRoomSubmit">
-			<div class="input-group">
-				<input
-					required
-					class="input input-large"
-					maxlength="40"
-					placeholder="Enter a room name..."
-					type="text"
-					v-model="roomName"
-				/>
-			</div>
-			<button class="btn btn-primary btn-large" type="submit">Create</button>
-		</form>
+		<transition appear name="page">
+			<form class="page__form card card-form delay-1" @submit.prevent="createRoomSubmit">
+				<div class="input-group">
+					<input
+						required
+						class="input input-large"
+						maxlength="40"
+						placeholder="Enter a room name..."
+						type="text"
+						v-model="roomName"
+					/>
+				</div>
+				<button class="btn btn-primary btn-large" type="submit">Create</button>
+			</form>
+		</transition>
 
 		<!-- body -->
 		<div class="page__body">
 			<transition-group name="list" tag="ul" mode="out-in" class="room-list" appear>
-				<li class="room-list__item" v-for="(room, key, i) in rooms" :key="i" :class="`delay-${i}`">
+				<li class="room-list__item" v-for="(room, key, i) in rooms" :key="i" :class="`delay-${i + 2}`">
 					<room-card class="room-list__card" v-bind="room" rooms></room-card>
 				</li>
 			</transition-group>
-
-			<div class="page__body-empty" v-if="Object.keys(rooms).length === 0">
-				<i class="ri-forbid-line mr-2"></i>No rooms found
-			</div>
+			<transition appear name="page">
+				<div class="page__body-empty delay-3" v-if="Object.keys(rooms).length === 0">
+					<i class="ri-forbid-line mr-2"></i>No rooms found
+				</div>
+			</transition>
 		</div>
 	</div>
 </template>
@@ -73,7 +78,6 @@ export default {
 	opacity: 1;
 	display: flex;
 	flex-direction: column;
-	padding: 5rem 0;
 
 	&__change-name-link {
 		position: fixed;
@@ -87,6 +91,7 @@ export default {
 		align-items: center;
 		justify-content: center;
 		margin-bottom: 2.5rem;
+		padding: 5rem 0 0;
 	}
 	&__form {
 		margin-bottom: 2.5rem;

@@ -33,7 +33,7 @@ export default {
 				class="chat__list-item"
 				v-for="(message, i) in reversedMessages"
 				:key="i"
-				:class="[message.event ? 'event' : 'message', get(roomState, `room.users.${message.userid}.color`, 'empty')]"
+				:class="[message.event ? `event event-${message.event}` : 'message', get(roomState, `room.users.${message.userid}.color`, 'empty')]"
 			>
 				<!-- event -->
 				<div
@@ -71,7 +71,6 @@ export default {
 
 .chat {
 	overflow-y: auto;
-	// height: 400px;
 
 	&__list {
 		height: 100%;
@@ -81,20 +80,25 @@ export default {
 		flex-direction: column-reverse;
 		justify-content: flex-start;
 		overflow-y: auto;
+		overflow-x: hidden;
 		font-size: 0.85rem;
+		width: 337px;
 
 		&-item {
 			flex: 0 0 auto;
+			padding: 0 1rem 0.5rem 0.5rem;
 
-			&:last-child {
-				padding-top: 1rem !important;
-			}
-			&:first-child {
-				margin-bottom: 0.25rem;
+			&.event-ready {
+				padding: 0;
+				margin-bottom: 0.5rem;
 			}
 			&.empty {
 				opacity: 0.5;
 			}
+			&:last-child {
+				padding-top: 0.5rem;
+			}
+
 			@each $color, $name in $colors {
 				&.#{$name} .username {
 					color: $color;
@@ -124,8 +128,6 @@ export default {
 		}
 		&-event {
 			flex: 0 0 auto;
-			margin: 0 0 0.75rem;
-			padding: 0 0.5rem;
 			position: relative;
 			display: flex;
 			align-items: center;
@@ -143,49 +145,27 @@ export default {
 				width: 18px;
 			}
 
-			&.join {
-				margin-top: 0.25rem;
-			}
 			&.ready {
-				padding: 0.5rem;
-				margin: 0 0 0.75rem;
-
-				i {
-					height: 18px;
-					width: 18px;
-				}
-				.message {
-					color: fade-out($text, 0.25);
-				}
+				padding: 0.35rem 1rem 0.35rem 0.5rem;
 			}
 			&.countdown {
-				padding: 0 0.5rem;
-
 				.username,
 				i {
 					display: none;
 				}
 				.message {
-					font-size: 0.9em;
-					color: lighten($text, 20);
+					opacity: 0.75;
 				}
 			}
 			&.countdown-cancel {
-				padding: 0 0.5rem;
-
 				i {
 					display: none;
-				}
-				.message {
-					transform: translateY(1px);
 				}
 			}
 		}
 		&-message {
 			display: flex;
 			align-items: flex-start;
-			margin: 0 0 0.5rem;
-			padding: 0 1rem 0 1rem;
 		}
 
 		.username {
@@ -193,7 +173,8 @@ export default {
 			color: $text;
 			font-weight: 900;
 			display: inline;
-			margin-right: 0.35em;
+			margin-right: 0.25em;
+			line-height: 1.1;
 		}
 		.message {
 			display: inline;
@@ -201,9 +182,22 @@ export default {
 			white-space: wrap;
 			overflow: hidden;
 			text-overflow: ellipsis;
-			line-height: 1.2;
+			line-height: 1.1;
 		}
 	}
+}
+
+.event-countdown-cancel + .event-countdown {
+	margin-bottom: 0.25rem;
+}
+.event-countdown + .event-ready {
+	margin-bottom: 0.75rem;
+}
+.event-countdown + .message {
+	margin-bottom: 0.25rem;
+}
+.event-countdown + .event-countdown-cancel {
+	margin-bottom: 0.25rem;
 }
 
 @keyframes barberpole {
